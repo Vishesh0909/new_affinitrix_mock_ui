@@ -22,6 +22,10 @@
   --brand-border: #CDD8FB;
   --brand-glow: rgba(30, 57, 214, 0.12);
   --on-brand: #FFFFFF;
+  /* Solid brand fills (buttons, segment indicator). Kept separate from
+     --brand so the dark theme can lighten accent TEXT without washing out
+     the fills that carry white labels. */
+  --brand-grad: linear-gradient(135deg, #1E39D6 0%, #2E49E8 55%, #162BB0 100%);
 
   --gold: #D5AA55;
   --gold-hover: #C29640;
@@ -138,29 +142,41 @@
 }
 
 [data-theme="dark"] {
-  --canvas: #090C16;
-  --canvas-subtle: #0E1220;
-  --surface: #12172A;
-  --surface-alt: #171E34;
-  --surface-hover: #1D2641;
-  --surface-active: #242F50;
+  /* Neutral near-black. The previous values carried a blue cast in every
+     surface, which read as navy rather than dark. Brand blue now only
+     appears where it is actually the accent. */
+  --canvas: #08090B;
+  --canvas-subtle: #0C0D10;
+  --surface: #121316;
+  --surface-alt: #17181C;
+  --surface-hover: #1E2024;
+  --surface-active: #26282D;
 
-  --ink: #F3F5FA;
-  --ink-secondary: #9AA6BF;
-  --ink-muted: #6B7792;
-  --ink-faint: #434D64;
+  --ink: #F4F5F7;
+  --ink-secondary: #A1A4AD;
+  --ink-muted: #74777F;
+  --ink-faint: #494C54;
 
-  --border: #1E273F;
-  --border-subtle: #171F33;
-  --border-strong: #2A3655;
-  --border-focus: #5572FF;
+  --border: #26282D;
+  --border-subtle: #1C1E22;
+  --border-strong: #35383F;
+  --border-focus: #8AA0FF;
 
-  --brand: #4865FF;
-  --brand-hover: #607AFF;
-  --brand-active: #324ED9;
-  --brand-surface: #151F48;
-  --brand-border: #243578;
-  --brand-glow: rgba(72, 101, 255, 0.2);
+  /* Accent text on a near-black canvas needs to be considerably lighter
+     than the light theme's brand, or links read as dark blue on black. */
+  --brand: #8AA0FF;
+  --brand-hover: #A3B4FF;
+  --brand-active: #7189F0;
+  --brand-surface: #191D2B;
+  --brand-border: #303750;
+  --brand-glow: rgba(138, 160, 255, 0.22);
+  --brand-grad: linear-gradient(135deg, #4A63E8 0%, #3A50D4 55%, #5A74FF 100%);
+
+  /* The dark theme never redefined these, so they kept their light values
+     and an info callout rendered as a near-white box. */
+  --info: #8AA0FF;
+  --info-surface: #191D2B;
+  --info-border: #303750;
 
   --gold: #E2BC68;
   --gold-ink: #F7D48E;
@@ -185,14 +201,14 @@
   --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.7);
   --shadow-float: 0 20px 48px rgba(0, 0, 0, 0.85);
 
-  --chart-1: #5572FF;
+  --chart-1: #8AA0FF;
   --chart-2: #E2BC68;
   --chart-3: #22C55E;
-  --chart-ghost: #161D31;
+  --chart-ghost: #191B1F;
 
-  --chart-age-brand: #5572FF;
-  --chart-age-brand-2: #7D92FF;
-  --chart-age-brand-3: #A9B8FF;
+  --chart-age-brand: #8AA0FF;
+  --chart-age-brand-2: #A6B6FF;
+  --chart-age-brand-3: #C6D0FF;
   --chart-age-gold: #E2BC68;
 
   --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.5), 0 8px 24px -12px rgba(0, 0, 0, 0.7);
@@ -1875,10 +1891,10 @@ table.saas-table tfoot td {
 }
 
 [data-theme="dark"] {
-  --nav-bg: linear-gradient(180deg, #0C1124 0%, #06090F 100%);
-  --nav-border: rgba(255, 255, 255, 0.06);
+  --nav-bg: linear-gradient(180deg, #141518 0%, #09090B 100%);
+  --nav-border: rgba(255, 255, 255, 0.07);
   --nav-hover: rgba(255, 255, 255, 0.05);
-  --nav-active-bg: rgba(86, 116, 255, 0.17);
+  --nav-active-bg: rgba(138, 160, 255, 0.16);
   --nav-surface: rgba(255, 255, 255, 0.05);
   --nav-surface-line: rgba(255, 255, 255, 0.09);
 }
@@ -2268,7 +2284,7 @@ table.saas-table tfoot td {
 /* --- Fills ---------------------------------------------------------------- */
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--brand) 0%, #2E49E8 55%, var(--brand-hover) 100%);
+  background: var(--brand-grad);
   border-color: transparent;
   color: var(--on-brand);
   box-shadow:
@@ -2278,7 +2294,7 @@ table.saas-table tfoot td {
 }
 
 .btn-primary:not(:disabled):hover {
-  background: linear-gradient(135deg, var(--brand) 0%, #2E49E8 55%, var(--brand-hover) 100%);
+  background: var(--brand-grad);
   transform: translateY(-2px);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.3),
@@ -2874,4 +2890,67 @@ tr:hover .afx-cellbar {
   .afx-cellbar {
     animation: none !important;
   }
+}
+
+/* --------------------------------------------------------------------------
+   Sidebar brand plate
+   The rail is dark, so the original blue logo sits on a white rounded plate
+   rather than being swapped for a light-ink variant. The plate keeps the
+   brand colour intact in both themes.
+   -------------------------------------------------------------------------- */
+
+.app-sidebar .brand-link {
+  /* Sized to its contents, not stretched across the rail. */
+  align-self: center;
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: #FFFFFF;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    0 6px 18px -10px rgba(0, 0, 0, 0.6);
+  transition: transform var(--duration-normal) var(--ease-bounce),
+              box-shadow var(--duration-normal) var(--ease-out),
+              padding var(--duration-normal) var(--ease-out);
+}
+
+.app-sidebar .brand-link:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 2px 4px rgba(0, 0, 0, 0.32),
+    0 12px 26px -12px rgba(0, 0, 0, 0.7);
+}
+
+.app-sidebar .brand-full-logo {
+  height: 44px;
+}
+
+.app-sidebar .brand-symbol-logo {
+  height: 30px;
+}
+
+/* Taller than the top bar, to hold the brand plate. Centred horizontally —
+   an earlier rule left this flex-start. */
+.sidebar-brand-deck {
+  height: auto;
+  min-height: 92px;
+  padding: 16px;
+  justify-content: center;
+}
+
+/* Collapsed: a square plate around the mark alone. */
+.app.nav-collapsed .sidebar-brand-deck {
+  padding: 11px;
+  min-height: 78px;
+}
+
+.app.nav-collapsed .app-sidebar .brand-link {
+  padding: 10px;
+  border-radius: 14px;
+}
+
+/* Re-centred against the taller deck. */
+.sidebar-toggle-btn {
+  top: 34px;
 }

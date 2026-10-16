@@ -123,8 +123,9 @@ import { percentCells } from './visuals.js';
     document.querySelectorAll('.theme-toggle-trigger').forEach(btn => {
       btn.innerHTML = svg(t === 'dark' ? 'sun' : 'moon', 17);
     });
-    // `.is-on-dark` logos live on the navy sidebar, which does not follow the
-    // app theme, so they keep the light-ink artwork in both modes.
+    // `.is-on-dark` logos sit on the sidebar's white plate, which does not
+    // follow the app theme, so they keep the original blue artwork in both
+    // modes and must be skipped by the swap.
     const suffix = t === 'dark' ? '-dark' : '';
     document.querySelectorAll('.brand-full-logo:not(.is-on-dark)').forEach(img => {
       img.src = `assets/afintrix-logo${suffix}.png`;
@@ -260,8 +261,8 @@ import { percentCells } from './visuals.js';
 
         <div class="sidebar-brand-deck">
           <a href="index.html" class="brand-link" title="AFINTRIX ERP Platform">
-            <img src="assets/afintrix-logo-dark.png" alt="AFINTRIX" class="brand-full-logo is-on-dark">
-            <img src="assets/afintrix-symbol-dark.png" alt="AFINTRIX" class="brand-symbol-logo is-on-dark">
+            <img src="assets/afintrix-logo.png" alt="AFINTRIX" class="brand-full-logo is-on-dark">
+            <img src="assets/afintrix-symbol.png" alt="AFINTRIX" class="brand-symbol-logo is-on-dark">
           </a>
         </div>
 
