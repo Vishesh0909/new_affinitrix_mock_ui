@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Employee Self-Service Portal · AFINTRIX ERP</title>
+  <meta name="description" content="Personal employee self-service workspace for attendance, leave, expense reimbursements, and salary slips.">
+  <link rel="icon" type="image/png" href="assets/afintrix-symbol.png">
+  <link rel="stylesheet" href="css/sapphire.css">
+</head>
+<body>
+<div class="app" data-module="people" data-section="portal-home">
+  <main class="main">
+    <div data-crumb="Personal Workspace / Self-Service Dashboard" hidden></div>
+
+    <!-- Page Title & Header Actions -->
+    <div class="page-title-banner animate-enter">
+      <div class="page-title-row">
+        <div class="page-headline-group">
+          <h1>Good morning, Hanna</h1>
+          <div class="page-caption">
+            <span>Senior Accounts Officer</span>
+            <span>&middot;</span>
+            <span>Accounts - AD &middot; Dhaka Branch</span>
+            <span>&middot;</span>
+            <span style="color:var(--pos);font-weight:700">General Shift: 09:00 - 18:00</span>
+          </div>
+        </div>
+
+        <div class="page-action-cluster">
+          <button class="btn btn-secondary btn-sm" data-toast="Biometric Check-in Logged|Checked in at 09:02 on 01 Sep 2026 &middot; On Time.|success">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+            <span>Mark Attendance</span>
+          </button>
+          <button class="btn btn-secondary btn-sm" data-open="mExpense">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 14V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4v-4h12v-2zM3 6h14v8H3V6zm19 7h-2V9h2v4zm-2 6h2v-4h-2v4z"/></svg>
+            <span>Claim Expense</span>
+          </button>
+          <button class="btn btn-primary btn-sm" data-open="mLeave">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+            <span>Apply for Leave</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Portal Tabs -->
+      <div class="page-nav-tabs">
+        <button class="tab-nav-btn active" data-tab="sum">Overview &amp; Balances</button>
+        <button class="tab-nav-btn" data-tab="req">My Active Requests <span class="tab-count">3</span></button>
+        <button class="tab-nav-btn" data-tab="pay">My Salary Slips</button>
+      </div>
+    </div>
+
+    <!-- Viewport Canvas -->
+    <div class="page-viewport-canvas">
+
+      <!-- Tab: Overview -->
+      <div data-panel="sum">
+        
+        <!-- 1. Quota & Upcoming Pay Strip -->
+        <div style="display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));gap:16px;margin-bottom:24px" class="animate-enter animate-delay-1">
+          <div class="saas-card" style="padding:16px 20px">
+            <div style="font-size:11.5px;font-weight:600;color:var(--ink-muted);margin-bottom:4px">Casual Leave Balance</div>
+            <div class="num" style="font-size:24px;font-weight:800;color:var(--brand)">8 <small style="font-size:14px;color:var(--ink-muted)">/ 10 days</small></div>
+            <div style="height:5px;background:var(--border);border-radius:99px;margin:8px 0;overflow:hidden">
+              <div style="width:80%;height:100%;background:var(--brand)"></div>
+            </div>
+            <div style="font-size:11px;color:var(--warn);font-weight:600">1 request pending review</div>
+          </div>
+
+          <div class="saas-card" style="padding:16px 20px">
+            <div style="font-size:11.5px;font-weight:600;color:var(--ink-muted);margin-bottom:4px">Medical Leave Balance</div>
+            <div class="num" style="font-size:24px;font-weight:800;color:var(--ink)">5 <small style="font-size:14px;color:var(--ink-muted)">/ 14 days</small></div>
+            <div style="height:5px;background:var(--border);border-radius:99px;margin:8px 0;overflow:hidden">
+              <div style="width:35%;height:100%;background:var(--pos)"></div>
+            </div>
+            <div style="font-size:11px;color:var(--ink-secondary)">Available for medical needs</div>
+          </div>
+
+          <div class="saas-card" style="padding:16px 20px">
+            <div style="font-size:11.5px;font-weight:600;color:var(--ink-muted);margin-bottom:4px">Next Payroll Disbursement</div>
+            <div class="num" style="font-size:24px;font-weight:800;color:var(--ink)"><span class="cur" style="font-size:16px">$</span>92,000<small style="font-size:14px">.00</small></div>
+            <div style="font-size:11px;color:var(--brand);margin-top:8px;font-weight:600">Scheduled for 30 Sep 2026</div>
+          </div>
+
+          <div class="saas-card" style="padding:16px 20px;border:1px solid var(--gold-border);background:var(--gold-surface)">
+            <div style="font-size:11.5px;font-weight:700;color:var(--gold-ink);margin-bottom:4px">Monthly Attendance Rate</div>
+            <div class="num" style="font-size:24px;font-weight:800;color:var(--gold-ink)">21 <small style="font-size:14px">/ 22 days</small></div>
+            <div style="height:5px;background:var(--gold-border);border-radius:99px;margin:8px 0;overflow:hidden">
+              <div style="width:95.4%;height:100%;background:var(--gold)"></div>
+            </div>
+            <div style="font-size:11px;color:var(--gold-ink);font-weight:600">On-time rate: 100%</div>
+          </div>
+        </div>
+
+        <!-- 2. Dual Column Self-Service Hub -->
+        <div style="display:grid;grid-template-columns:1.2fr 0.8fr;gap:24px" class="animate-enter animate-delay-2">
+          
+          <!-- Left: Active Requests & Fast Track Hub -->
+          <div style="display:flex;flex-direction:column;gap:20px">
+            
+            <div class="saas-card">
+              <div class="card-header-bar">
+                <h3>My Active Requests Pipeline</h3>
+                <span class="status-badge blue">3 Records</span>
+              </div>
+              <div class="card-content-body p-0">
+                <table class="saas-table dense">
+                  <thead>
+                    <tr>
+                      <th>Request Category</th>
+                      <th>Target Period</th>
+                      <th>Status</th>
+                      <th class="align-right">Quantum</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-weight:700">Casual Leave</td>
+                      <td class="numeric">08&ndash;10 Sep 2026</td>
+                      <td><span class="status-badge yellow">Pending Manager</span></td>
+                      <td class="numeric" style="font-weight:700">3.0 days</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight:700">Expense Claim &middot; Travel</td>
+                      <td class="numeric">24 Aug 2026</td>
+                      <td><span class="status-badge neutral">Draft</span></td>
+                      <td class="numeric" style="font-weight:700">$ 4,850.00</td>
+                    </tr>
+                    <tr>
+                      <td style="font-weight:700">Casual Leave</td>
+                      <td class="numeric">12 Jun 2026</td>
+                      <td><span class="status-badge green"><span class="status-badge-dot"></span>Approved</span></td>
+                      <td class="numeric" style="font-weight:700">1.0 day</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Self-Service Shortcut Matrix -->
+            <div class="saas-card">
+              <div class="card-header-bar">
+                <h3>Self-Service Operational Tools</h3>
+              </div>
+              <div class="card-content-body p-0">
+                <div style="display:flex;flex-direction:column">
+                  <a href="#" data-open="mLeave" style="display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border-subtle);transition:background var(--duration-fast)" onmouseover="this.style.background='var(--surface-hover)'" onmouseout="this.style.background=''">
+                    <div style="width:34px;height:34px;border-radius:var(--rad-sm);background:var(--brand-surface);color:var(--brand);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
+                    </div>
+                    <div style="flex:1">
+                      <div style="font-weight:700;font-size:13px;color:var(--ink)">File Leave Application</div>
+                      <div style="font-size:11.5px;color:var(--ink-secondary)">Deduct from 2026 annual quota</div>
+                    </div>
+                    <span style="color:var(--brand);font-weight:700">&rsaquo;</span>
+                  </a>
+
+                  <a href="#" data-open="mExpense" style="display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border-subtle);transition:background var(--duration-fast)" onmouseover="this.style.background='var(--surface-hover)'" onmouseout="this.style.background=''">
+                    <div style="width:34px;height:34px;border-radius:var(--rad-sm);background:var(--brand-surface);color:var(--brand);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+                    </div>
+                    <div style="flex:1">
+                      <div style="font-weight:700;font-size:13px;color:var(--ink)">Submit Expense Voucher</div>
+                      <div style="font-size:11.5px;color:var(--ink-secondary)">Reimbursement claims for travel and client meals</div>
+                    </div>
+                    <span style="color:var(--brand);font-weight:700">&rsaquo;</span>
+                  </a>
+
+                  <a href="#" data-toast="Payslip Download Started|SAL-SLIP-00030 (August 2026) is downloading.|info" style="display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border-subtle);transition:background var(--duration-fast)" onmouseover="this.style.background='var(--surface-hover)'" onmouseout="this.style.background=''">
+                    <div style="width:34px;height:34px;border-radius:var(--rad-sm);background:var(--surface-alt);color:var(--ink-secondary);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                    </div>
+                    <div style="flex:1">
+                      <div style="font-weight:700;font-size:13px;color:var(--ink)">Download Latest Salary Slip</div>
+                      <div style="font-size:11.5px;color:var(--ink-secondary)">August 2026 &middot; Issued 31 Aug 2026</div>
+                    </div>
+                    <span style="color:var(--brand);font-weight:700">&rsaquo;</span>
+                  </a>
+
+                  <a href="record.html" style="display:flex;align-items:center;gap:14px;padding:14px 20px;transition:background var(--duration-fast)" onmouseover="this.style.background='var(--surface-hover)'" onmouseout="this.style.background=''">
+                    <div style="width:34px;height:34px;border-radius:var(--rad-sm);background:var(--surface-alt);color:var(--ink-secondary);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                    </div>
+                    <div style="flex:1">
+                      <div style="font-weight:700;font-size:13px;color:var(--ink)">View Personal Dossier</div>
+                      <div style="font-size:11.5px;color:var(--ink-secondary)">Contract clauses, designation, and document vault</div>
+                    </div>
+                    <span style="color:var(--brand);font-weight:700">&rsaquo;</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right: Payslip Feature & Notices -->
+          <div style="display:flex;flex-direction:column;gap:20px">
+            
+            <!-- Latest Payslip Card -->
+            <div class="saas-card" style="border:1px solid var(--border-strong)">
+              <div class="card-header-bar">
+                <h3>Latest Disbursed Payslip</h3>
+                <span class="status-badge green"><span class="status-badge-dot"></span>Paid</span>
+              </div>
+              <div class="card-content-body" style="display:flex;flex-direction:column;gap:12px">
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <span style="color:var(--ink-muted);font-size:12px">Reference:</span>
+                  <span class="num" style="font-weight:700">SAL-SLIP-00030</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <span style="color:var(--ink-muted);font-size:12px">Period:</span>
+                  <span style="font-weight:600">August 2026</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <span style="color:var(--ink-muted);font-size:12px">Gross Pay:</span>
+                  <span class="num" style="font-weight:700">$ 92,000.00</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <span style="color:var(--ink-muted);font-size:12px">Deductions:</span>
+                  <span class="num" style="font-weight:600;color:var(--neg)">($ 11,040.00)</span>
+                </div>
+                <div style="border-top:1px solid var(--border-subtle);padding-top:10px;display:flex;justify-content:space-between;align-items:center">
+                  <span style="font-weight:700">Net Disbursed:</span>
+                  <span class="num" style="font-weight:800;color:var(--brand);font-size:17px">$ 80,960.00</span>
+                </div>
+                <button class="btn btn-secondary btn-sm" style="width:100%;margin-top:8px" data-toast="Download Started|SAL-SLIP-00030 PDF is downloading.|info">
+                  Download Official PDF Slip
+                </button>
+              </div>
+            </div>
+
+            <!-- Operational Notice Box -->
+            <div class="saas-card">
+              <div class="card-header-bar">
+                <h3>Department Reminders</h3>
+              </div>
+              <div class="card-content-body" style="display:flex;flex-direction:column;gap:12px">
+                <div class="banner-callout info">
+                  <div>
+                    <div style="font-weight:700;font-size:12.5px">FY 2026-2027 Tax Exemption Proofs</div>
+                    <div style="font-size:11.5px;color:var(--ink-secondary);margin-top:2px">Submit investment tax declarations by 15 October 2026.</div>
+                  </div>
+                </div>
+                <div class="banner-callout warning">
+                  <div>
+                    <div style="font-weight:700;font-size:12.5px">Scheduled Office Holiday</div>
+                    <div style="font-size:11.5px;color:var(--ink-secondary);margin-top:2px">Dhaka Branch will be closed on 16 September.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Tab: My Active Requests -->
+      <div data-panel="req" hidden>
+        <div class="table-wrapper animate-enter">
+          <table class="saas-table">
+            <thead>
+              <tr>
+                <th class="sortable">Reference</th>
+                <th class="sortable">Classification</th>
+                <th class="sortable">Date Range</th>
+                <th class="sortable">Workflow State</th>
+                <th class="align-right sortable">Total Quantum</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="primary-ref"><a href="approval.html">HR-LAP-2026-00114</a></td>
+                <td>Casual Leave</td>
+                <td class="numeric">08&ndash;10 Sep 2026</td>
+                <td><span class="status-badge yellow">Awaiting Manager Review</span></td>
+                <td class="numeric" style="font-weight:700">3.0 days</td>
+              </tr>
+              <tr>
+                <td class="primary-ref">EXP-2026-00051</td>
+                <td>Expense Claim &middot; Travel</td>
+                <td class="numeric">24 Aug 2026</td>
+                <td><span class="status-badge neutral">Draft Pending Submission</span></td>
+                <td class="numeric" style="font-weight:700">$ 4,850.00</td>
+              </tr>
+              <tr>
+                <td class="primary-ref"><a href="approval.html">HR-LAP-2026-00061</a></td>
+                <td>Casual Leave</td>
+                <td class="numeric">12 Jun 2026</td>
+                <td><span class="status-badge green"><span class="status-badge-dot"></span>Approved &amp; Roster Locked</span></td>
+                <td class="numeric" style="font-weight:700">1.0 day</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab: My Salary Slips -->
+      <div data-panel="pay" hidden>
+        <div class="table-wrapper animate-enter">
+          <table class="saas-table">
+            <thead>
+              <tr>
+                <th class="sortable">Document Reference</th>
+                <th class="sortable">Payroll Month</th>
+                <th class="align-right sortable">Gross Salary ($)</th>
+                <th class="align-right sortable">Net Disbursed ($)</th>
+                <th class="sortable">Status</th>
+                <th style="width:120px;text-align:right"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="primary-ref">SAL-SLIP-00030</td>
+                <td>August 2026</td>
+                <td class="numeric">92,000.00</td>
+                <td class="numeric" style="font-weight:800;color:var(--brand)">80,960.00</td>
+                <td><span class="status-badge green"><span class="status-badge-dot"></span>Paid</span></td>
+                <td style="text-align:right">
+                  <button class="btn btn-secondary btn-sm" data-toast="Download Started|SAL-SLIP-00030 PDF is downloading.|info">Download</button>
+                </td>
+              </tr>
+              <tr>
+                <td class="primary-ref">SAL-SLIP-00029</td>
+                <td>July 2026</td>
+                <td class="numeric">92,000.00</td>
+                <td class="numeric" style="font-weight:800;color:var(--brand)">80,960.00</td>
+                <td><span class="status-badge green"><span class="status-badge-dot"></span>Paid</span></td>
+                <td style="text-align:right">
+                  <button class="btn btn-secondary btn-sm" data-toast="Download Started|SAL-SLIP-00029 PDF is downloading.|info">Download</button>
+                </td>
+              </tr>
+              <tr>
+                <td class="primary-ref">SAL-SLIP-00028</td>
+                <td>June 2026</td>
+                <td class="numeric">88,000.00</td>
+                <td class="numeric" style="font-weight:800;color:var(--brand)">77,440.00</td>
+                <td><span class="status-badge green"><span class="status-badge-dot"></span>Paid</span></td>
+                <td style="text-align:right">
+                  <button class="btn btn-secondary btn-sm" data-toast="Download Started|SAL-SLIP-00028 PDF is downloading.|info">Download</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Modal: Apply Leave -->
+<div class="saas-modal" id="mLeave">
+  <div class="modal-header-deck">
+    <h3>Apply for Leave</h3>
+    <button class="btn btn-icon btn-sm" data-close>&times;</button>
+  </div>
+  <div class="modal-body-deck">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="form-group">
+        <label class="form-label-deck">Leave Category <span class="req">*</span></label>
+        <select class="form-input">
+          <option>Casual Leave &mdash; 8 days remaining</option>
+          <option>Sick Leave &mdash; 5 days remaining</option>
+          <option>Earned Leave &mdash; 12 days remaining</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label-deck">Half Day Session</label>
+        <select class="form-input">
+          <option>Full Day</option>
+          <option>First Half</option>
+          <option>Second Half</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label-deck">From Date <span class="req">*</span></label>
+        <input type="date" class="form-input" value="2026-09-08">
+      </div>
+      <div class="form-group">
+        <label class="form-label-deck">To Date <span class="req">*</span></label>
+        <input type="date" class="form-input" value="2026-09-10">
+      </div>
+    </div>
+    <div class="form-group" style="margin-top:16px">
+      <label class="form-label-deck">Justification</label>
+      <textarea class="form-input textarea" placeholder="Specify leave details for managerial review..."></textarea>
+    </div>
+    <div class="banner-callout info" style="margin-top:16px">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+      <div>
+        <div style="font-weight:700">Projected Balance: 5 of 10 Days</div>
+        <div style="font-size:12px;color:var(--ink-secondary)">Application will be forwarded to Miracle Geidt for authorization.</div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer-deck">
+    <button class="btn btn-secondary btn-sm" data-close>Cancel</button>
+    <button class="btn btn-primary btn-sm" data-toast="Leave Application Filed|HR-LAP-2026-00114 sent to Miracle Geidt.|success" data-close-after>Submit Application</button>
+  </div>
+</div>
+
+<!-- Modal: Claim Expense -->
+<div class="saas-modal" id="mExpense">
+  <div class="modal-header-deck">
+    <h3>Submit Expense Reimbursement</h3>
+    <button class="btn btn-icon btn-sm" data-close>&times;</button>
+  </div>
+  <div class="modal-body-deck">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="form-group">
+        <label class="form-label-deck">Expense Category <span class="req">*</span></label>
+        <select class="form-input">
+          <option>Travel &amp; Transport</option>
+          <option>Meals &amp; Subsistence</option>
+          <option>Hotel Accommodation</option>
+          <option>Office Stationery</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label-deck">Expense Date <span class="req">*</span></label>
+        <input type="date" class="form-input" value="2026-08-24">
+      </div>
+      <div class="form-group">
+        <label class="form-label-deck">Claim Amount ($) <span class="req">*</span></label>
+        <input type="number" class="form-input" value="4850.00" step="0.01">
+      </div>
+      <div class="form-group">
+        <label class="form-label-deck">Cost Center</label>
+        <select class="form-input">
+          <option>Main - AD</option>
+          <option>Dhaka Branch - AD</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group" style="margin-top:16px">
+      <label class="form-label-deck">Voucher Description</label>
+      <textarea class="form-input textarea">Client visit, Chattogram. Return rail fare and one night accommodation.</textarea>
+    </div>
+  </div>
+  <div class="modal-footer-deck">
+    <button class="btn btn-secondary btn-sm" data-close>Cancel</button>
+    <button class="btn btn-primary btn-sm" data-toast="Expense Voucher Filed|EXP-2026-00051 submitted for manager approval.|success" data-close-after>Submit Voucher</button>
+  </div>
+</div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

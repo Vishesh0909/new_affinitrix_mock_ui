@@ -1,0 +1,1571 @@
+@charset "UTF-8";
+/* ==========================================================================
+   AFINTRIX ERP — FINANCIAL COMMAND CENTER
+   Composition layer for the Financial Overview. Loads after sapphire.css and
+   owns only `afx-` prefixed classes, so the shared component contracts used by
+   the other pages are untouched.
+
+   Structure
+     1. Command bar & segmented controls
+     2. Operating position band (hero)
+     3. Instrument panel (flow indicators)
+     4. Card shell & chart chrome
+     5. Receivables intelligence
+     6. Triage & ledger stream
+     7. Motion primitives
+     8. Responsive behaviour
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Command bar
+   -------------------------------------------------------------------------- */
+
+/* The app shell is a fixed-height flex column with overflow hidden, so this
+   is the scrolling region. It stays full-width and an inner wrapper carries
+   the measure, which keeps the scrollbar at the viewport edge instead of
+   floating inside the content column on wide displays. */
+.afx-page {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+}
+
+.afx-page::-webkit-scrollbar {
+  width: 6px;
+}
+
+.afx-page::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 6px;
+}
+
+.afx-page-inner {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--sp-6) var(--shell-gutter) var(--sp-9);
+}
+
+.afx-commandbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-5);
+}
+
+.afx-title-group h1 {
+  font-size: clamp(22px, 2.2vw, 28px);
+  font-weight: 800;
+  letter-spacing: -0.028em;
+  line-height: 1.15;
+  margin: 0 0 6px;
+  color: var(--ink);
+}
+
+.afx-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--brand);
+  margin-bottom: 9px;
+}
+
+.afx-eyebrow::before {
+  content: "";
+  width: 16px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--brand), var(--gold));
+}
+
+.afx-context {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9px;
+  font-size: 12.5px;
+  color: var(--ink-secondary);
+}
+
+.afx-context .afx-sep {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--ink-faint);
+}
+
+.afx-reconciled {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 650;
+  color: var(--pos);
+}
+
+.afx-reconciled::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--pos);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--pos) 18%, transparent);
+}
+
+.afx-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+
+/* Segmented control — one sliding indicator, no per-button backgrounds. */
+.afx-segment {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--rad-md);
+}
+
+.afx-segment-indicator {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 0;
+  border-radius: calc(var(--rad-md) - 3px);
+  background: var(--surface);
+  box-shadow: var(--shadow-xs);
+  border: 1px solid var(--border-subtle);
+  pointer-events: none;
+  will-change: transform, width;
+}
+
+.afx-segment button {
+  position: relative;
+  z-index: 1;
+  appearance: none;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 650;
+  color: var(--ink-secondary);
+  padding: 6px 13px;
+  border-radius: calc(var(--rad-md) - 3px);
+  transition: color var(--duration-fast) var(--ease-out);
+  white-space: nowrap;
+}
+
+.afx-segment button:hover {
+  color: var(--ink);
+}
+
+.afx-segment button[aria-selected="true"] {
+  color: var(--brand);
+  font-weight: 750;
+}
+
+.afx-segment button:focus-visible {
+  outline: none;
+  box-shadow: var(--ring-focus);
+}
+
+/* View tabs — underline rail rather than a boxed segment. */
+.afx-tabs {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-5);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--sp-6);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.afx-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.afx-tabs button {
+  appearance: none;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 650;
+  color: var(--ink-secondary);
+  padding: 0 2px 13px;
+  white-space: nowrap;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.afx-tabs button:hover {
+  color: var(--ink);
+}
+
+.afx-tabs button[aria-selected="true"] {
+  color: var(--brand);
+  font-weight: 750;
+}
+
+.afx-tabs button:focus-visible {
+  outline: none;
+  box-shadow: var(--ring-focus);
+  border-radius: var(--rad-xs);
+}
+
+.afx-tab-indicator {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  border-radius: 2px 2px 0 0;
+  background: linear-gradient(90deg, var(--brand), color-mix(in srgb, var(--brand) 55%, var(--gold)));
+  pointer-events: none;
+  will-change: transform, width;
+}
+
+/* --------------------------------------------------------------------------
+   2. Operating position band
+   -------------------------------------------------------------------------- */
+
+.afx-position {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(300px, 0.95fr) minmax(0, 1.45fr);
+  gap: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--rad-xl);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  margin-bottom: var(--sp-6);
+}
+
+/* Brand wash: a single soft corner glow, not a full gradient fill. */
+.afx-position::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 140% at 0% 0%, color-mix(in srgb, var(--brand) 9%, transparent) 0%, transparent 58%),
+    radial-gradient(90% 120% at 100% 100%, color-mix(in srgb, var(--gold) 8%, transparent) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+.afx-position > * {
+  position: relative;
+}
+
+.afx-position-main {
+  padding: var(--sp-6) var(--sp-7);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.afx-metric-label {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.afx-metric-label span:first-child {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+}
+
+.afx-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11.5px;
+  font-weight: 750;
+  padding: 3px 8px;
+  border-radius: var(--rad-pill);
+  font-family: var(--f-mono);
+  font-feature-settings: "tnum" 1;
+}
+
+.afx-delta.is-up {
+  color: var(--pos);
+  background: var(--pos-surface);
+  border: 1px solid var(--pos-border);
+}
+
+.afx-delta.is-down {
+  color: var(--neg);
+  background: var(--neg-surface);
+  border: 1px solid var(--neg-border);
+}
+
+.afx-headline-value {
+  font-family: var(--f-mono);
+  font-feature-settings: "tnum" 1;
+  font-size: clamp(34px, 4.1vw, 50px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.afx-headline-value .afx-sym {
+  font-size: 0.56em;
+  color: var(--brand);
+  font-weight: 650;
+  align-self: flex-start;
+  margin-top: 0.14em;
+}
+
+/* Income vs expense composition — one bar, two truths. */
+.afx-composition {
+  margin-top: var(--sp-5);
+}
+
+.afx-comp-bar {
+  display: flex;
+  height: 10px;
+  border-radius: var(--rad-pill);
+  overflow: hidden;
+  background: var(--surface-alt);
+  box-shadow: inset 0 0 0 1px var(--border-subtle);
+}
+
+.afx-comp-seg {
+  height: 100%;
+  transform-origin: left center;
+}
+
+.afx-comp-seg.is-income {
+  background: linear-gradient(90deg, var(--brand), color-mix(in srgb, var(--brand) 72%, var(--gold)));
+}
+
+.afx-comp-seg.is-expense {
+  background: color-mix(in srgb, var(--ink-faint) 55%, transparent);
+}
+
+.afx-comp-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-5);
+  margin-top: var(--sp-3);
+}
+
+.afx-comp-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.afx-comp-item dt {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ink-muted);
+  margin: 0;
+}
+
+.afx-comp-item dt::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--marker, var(--brand));
+}
+
+.afx-comp-item dd {
+  margin: 0;
+  font-family: var(--f-mono);
+  font-feature-settings: "tnum" 1;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.015em;
+}
+
+/* --------------------------------------------------------------------------
+   3. Instrument panel — flow indicators as one unit, divided by hairlines
+   -------------------------------------------------------------------------- */
+
+.afx-instruments {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.afx-instrument {
+  position: relative;
+  display: block;
+  padding: var(--sp-5) var(--sp-5);
+  border-right: 1px solid var(--border-subtle);
+  text-decoration: none;
+  color: inherit;
+  transition: background var(--duration-fast) var(--ease-out);
+  isolation: isolate;
+}
+
+.afx-instrument:last-child {
+  border-right: 0;
+}
+
+.afx-instrument::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--accent, var(--brand));
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.afx-instrument:hover {
+  background: var(--surface-hover);
+}
+
+.afx-instrument:hover::after,
+.afx-instrument:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.afx-instrument:focus-visible {
+  outline: none;
+  box-shadow: var(--ring-focus);
+  border-radius: var(--rad-sm);
+}
+
+.afx-instrument.is-critical {
+  background: linear-gradient(180deg,
+      color-mix(in srgb, var(--gold-surface) 50%, var(--surface)) 0%,
+      var(--gold-surface) 100%);
+  box-shadow: inset 3px 0 0 var(--gold);
+  --accent: var(--gold);
+}
+
+.afx-instrument.is-critical .afx-inst-label::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 22%, transparent);
+}
+
+.afx-instrument.is-critical:hover {
+  background: color-mix(in srgb, var(--gold-surface) 70%, var(--gold-border));
+}
+
+.afx-inst-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 650;
+  color: var(--ink-muted);
+  margin-bottom: 7px;
+  letter-spacing: 0.01em;
+}
+
+.afx-instrument.is-critical .afx-inst-label {
+  color: var(--gold-ink);
+  font-weight: 750;
+}
+
+.afx-inst-value {
+  font-family: var(--f-mono);
+  font-feature-settings: "tnum" 1;
+  font-size: 22px;
+  font-weight: 750;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  line-height: 1.1;
+}
+
+.afx-instrument.is-positive .afx-inst-value {
+  color: var(--pos);
+}
+
+.afx-instrument.is-critical .afx-inst-value {
+  color: var(--gold-ink);
+}
+
+.afx-inst-meta {
+  margin-top: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ink-secondary);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.afx-instrument.is-critical .afx-inst-meta {
+  color: var(--gold-ink);
+}
+
+.afx-inst-meta .afx-arrow {
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity var(--duration-fast), transform var(--duration-fast) var(--ease-out);
+}
+
+.afx-instrument:hover .afx-arrow,
+.afx-instrument:focus-visible .afx-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* --------------------------------------------------------------------------
+   4. Card shell & chart chrome
+   -------------------------------------------------------------------------- */
+
+.afx-grid {
+  display: grid;
+  gap: var(--sp-6);
+  margin-bottom: var(--sp-6);
+}
+
+/* Grid and flex children default to min-width:auto, so a wide table refuses
+   to shrink and pushes the whole page sideways. Let them shrink; the inner
+   .table-scroller then does the scrolling. */
+.afx-grid > *,
+.afx-position > * {
+  min-width: 0;
+}
+
+.afx-grid.is-primary {
+  grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+}
+
+.afx-grid.is-split {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.afx-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--rad-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: box-shadow var(--duration-normal) var(--ease-out),
+              border-color var(--duration-normal) var(--ease-out);
+}
+
+.afx-card:hover {
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--border-strong);
+}
+
+.afx-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: var(--sp-5) var(--sp-5) var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.afx-card-head h2,
+.afx-card-head h3 {
+  margin: 0;
+  font-size: 14.5px;
+  font-weight: 750;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+
+.afx-card-sub {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--ink-secondary);
+}
+
+.afx-card-sub b {
+  font-family: var(--f-mono);
+  font-feature-settings: "tnum" 1;
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.afx-card-body {
+  padding: 0 var(--sp-5) var(--sp-5);
+  flex: 1;
+}
+
+.afx-card-body.is-flush {
+  padding: 0;
+}
+
+/* Legend doubles as a series toggle. */
+.afx-legend {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  flex-wrap: wrap;
+}
+
+.afx-legend button {
+  appearance: none;
+  border: 1px solid transparent;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+  font-size: 11.5px;
+  font-weight: 650;
+  color: var(--ink-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 9px;
+  border-radius: var(--rad-pill);
+  transition: background var(--duration-fast), color var(--duration-fast),
+              opacity var(--duration-fast);
+}
+
+.afx-legend button:hover {
+  background: var(--surface-hover);
+  color: var(--ink);
+}
+
+.afx-legend button:focus-visible {
+  outline: none;
+  box-shadow: var(--ring-focus);
+}
+
+.afx-legend button .afx-swatch {
+  width: 9px;
+  height: 9px;
+  border-radius: 3px;
+  background: var(--swatch);
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.afx-legend button[aria-pressed="false"] {
+  opacity: 0.42;
+}
+
+.afx-legend button[aria-pressed="false"] .afx-swatch {
+  transform: scale(0.7);
+  background: var(--ink-faint);
+}
+
+/* Chart surface */
+.afx-chart-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.afx-chart-svg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+.afx-axis-text {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.afx-axis-month {
+  font-family: var(--f-body);
+  font-size: 10.5px;
+  font-weight: 500;
+}
+
+.afx-axis-month.is-recorded {
+  font-weight: 750;
+}
+
+.afx-ghost-text {
+  font-family: var(--f-body);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.afx-ghost-zone {
+  pointer-events: none;
+}
+
+.afx-band {
+  cursor: pointer;
+  transition: fill var(--duration-fast) var(--ease-out);
+}
+
+.afx-band:hover,
+.afx-band.is-active {
+  fill: color-mix(in srgb, var(--brand) 6%, transparent);
+}
+
+.afx-band:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: -2px;
+}
+
+.afx-bar {
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.afx-chart-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  min-width: 164px;
+  padding: 10px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--rad-md);
+  box-shadow: var(--shadow-lg);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.afx-chart-tip.is-visible {
+  opacity: 1;
+}
+
+.afx-tip-head {
+  font-size: 11.5px;
+  font-weight: 750;
+  color: var(--ink);
+  margin-bottom: 7px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.afx-tip-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11.5px;
+  color: var(--ink-secondary);
+  padding: 2px 0;
+}
+
+.afx-tip-row b {
+  margin-left: auto;
+  font-family: var(--f-mono);
+  font-feature-settings: "tnum" 1;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.afx-tip-row b.is-neg {
+  color: var(--neg);
+}
+
+.afx-tip-row.is-total {
+  margin-top: 4px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.afx-tip-note {
+  font-size: 11.5px;
+  color: var(--ink-muted);
+  font-style: italic;
+}
+
+.afx-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.afx-chart-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: var(--sp-8) var(--sp-4);
+  color: var(--ink-muted);
+  font-size: 12.5px;
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   5. Receivables intelligence
+   -------------------------------------------------------------------------- */
+
+.afx-donut-cap {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.afx-donut-value {
+  font-family: var(--f-mono);
+  font-feature-settings: "tnum" 1;
+  font-size: 23px;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
+
+.afx-donut-sub {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.afx-arc {
+  cursor: pointer;
+  transition: opacity var(--duration-normal) var(--ease-out),
+              filter var(--duration-normal) var(--ease-out);
+}
+
+.afx-arc.is-dim {
+  opacity: 0.28;
+}
+
+.afx-arc:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+.afx-ageing-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: var(--sp-4);
+}
+
+.afx-ageing-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--sp-3);
+  width: 100%;
+  padding: 9px 11px;
+  border: 1px solid transparent;
+  border-radius: var(--rad-sm);
+  background: none;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  color: inherit;
+  text-decoration: none;
+  transition: background var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out),
+              transform var(--duration-fast) var(--ease-out);
+}
+
+.afx-ageing-row:hover,
+.afx-ageing-row.is-active {
+  background: var(--surface-hover);
+  transform: translateX(2px);
+}
+
+.afx-ageing-row:focus-visible {
+  outline: none;
+  box-shadow: var(--ring-focus);
+}
+
+.afx-ageing-row.is-critical {
+  background: var(--gold-surface);
+  border-color: var(--gold-border);
+}
+
+.afx-ageing-row.is-critical:hover,
+.afx-ageing-row.is-critical.is-active {
+  background: color-mix(in srgb, var(--gold-surface) 65%, var(--gold-border));
+}
+
+.afx-ageing-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--swatch);
+}
+
+.afx-ageing-name {
+  font-size: 12.5px;
+  font-weight: 650;
+  color: var(--ink);
+  display: block;
+}
+
+.afx-ageing-row.is-critical .afx-ageing-name {
+  color: var(--gold-ink);
+  font-weight: 750;
+}
+
+.afx-ageing-qual {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--ink-muted);
+  margin-top: 1px;
+}
+
+.afx-ageing-row.is-critical .afx-ageing-qual {
+  color: var(--gold-ink);
+  opacity: 0.85;
+}
+
+.afx-ageing-amount {
+  text-align: right;
+}
+
+.afx-ageing-amount b {
+  display: block;
+  font-family: var(--f-mono);
+  font-feature-settings: "tnum" 1;
+  font-size: 13px;
+  font-weight: 750;
+  color: var(--ink);
+  letter-spacing: -0.015em;
+}
+
+.afx-ageing-row.is-critical .afx-ageing-amount b {
+  color: var(--gold-ink);
+}
+
+.afx-ageing-amount span {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--ink-muted);
+  font-family: var(--f-mono);
+}
+
+/* Full-width ageing view (Receivables tab) */
+.afx-ageing-matrix {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: var(--sp-4);
+}
+
+.afx-ageing-tile {
+  position: relative;
+  padding: var(--sp-5);
+  border: 1px solid var(--border);
+  border-radius: var(--rad-md);
+  background: var(--surface);
+  overflow: hidden;
+  transition: transform var(--duration-normal) var(--ease-out),
+              box-shadow var(--duration-normal) var(--ease-out);
+}
+
+.afx-ageing-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.afx-ageing-tile.is-critical {
+  border-color: var(--gold-border);
+  background: var(--gold-surface);
+}
+
+.afx-ageing-tile-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--swatch);
+}
+
+.afx-tile-share {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-muted);
+}
+
+/* --------------------------------------------------------------------------
+   6. Triage & ledger stream
+   -------------------------------------------------------------------------- */
+
+.afx-triage {
+  display: flex;
+  flex-direction: column;
+}
+
+.afx-triage-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 13px var(--sp-5);
+  border-bottom: 1px solid var(--border-subtle);
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  transition: background var(--duration-fast) var(--ease-out);
+}
+
+.afx-triage-item:last-child {
+  border-bottom: 0;
+}
+
+.afx-triage-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--accent, var(--brand));
+  transform: scaleY(0);
+  transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.afx-triage-item:hover {
+  background: var(--surface-hover);
+}
+
+.afx-triage-item:hover::before,
+.afx-triage-item:focus-visible::before {
+  transform: scaleY(1);
+}
+
+.afx-triage-item:focus-visible {
+  outline: none;
+  box-shadow: inset var(--ring-focus);
+}
+
+.afx-triage-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--rad-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--brand-surface);
+  color: var(--brand);
+  transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.afx-triage-item:hover .afx-triage-icon {
+  transform: scale(1.06);
+}
+
+.afx-triage-item.is-critical {
+  --accent: var(--gold);
+}
+
+.afx-triage-item.is-critical .afx-triage-icon {
+  background: var(--gold-surface);
+  color: var(--gold-ink);
+}
+
+.afx-triage-item.is-neutral .afx-triage-icon {
+  background: var(--surface-alt);
+  color: var(--ink-secondary);
+}
+
+.afx-triage-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.afx-triage-title {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.afx-triage-detail {
+  display: block;
+  font-size: 11.5px;
+  color: var(--ink-secondary);
+  margin-top: 1px;
+}
+
+.afx-triage-trail {
+  font-family: var(--f-mono);
+  font-feature-settings: "tnum" 1;
+  font-size: 12.5px;
+  font-weight: 750;
+  color: var(--ink-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.afx-triage-item.is-critical .afx-triage-trail {
+  color: var(--gold-ink);
+}
+
+.afx-triage-trail .afx-arrow {
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.afx-triage-item:hover .afx-arrow {
+  transform: translateX(3px);
+}
+
+/* --------------------------------------------------------------------------
+   7. Motion primitives
+   -------------------------------------------------------------------------- */
+
+/* Reveal state is applied by motion.js at runtime, never here — a stylesheet
+   that hides content would leave it hidden if the script failed to load. */
+[data-reveal].is-revealed {
+  opacity: 1;
+}
+
+.afx-panel {
+  display: block;
+}
+
+.afx-panel[hidden] {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  [data-reveal].is-revealed {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .afx-card,
+  .afx-instrument,
+  .afx-triage-item,
+  .afx-ageing-row,
+  .afx-ageing-tile {
+    transition: none !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   8. Responsive
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1240px) {
+  .afx-grid.is-primary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 1080px) {
+  .afx-position {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .afx-position-main {
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .afx-instruments {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .afx-instrument:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .afx-instrument:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--border-subtle);
+  }
+}
+
+@media (max-width: 900px) {
+  .afx-grid.is-split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .afx-page-inner {
+    padding: var(--sp-4) var(--sp-4) var(--sp-8);
+  }
+
+  .afx-commandbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .afx-actions {
+    width: 100%;
+  }
+
+  /* Period control spans the row so the active value stays visible. */
+  .afx-segment {
+    flex: 1;
+    justify-content: space-between;
+  }
+
+  .afx-segment button {
+    flex: 1;
+    padding: 7px 8px;
+    text-align: center;
+  }
+
+  .afx-position-main {
+    padding: var(--sp-5);
+  }
+
+  .afx-instrument {
+    padding: var(--sp-4);
+  }
+
+  .afx-inst-value {
+    font-size: 19px;
+  }
+
+  .afx-card-head,
+  .afx-card-body {
+    padding-left: var(--sp-4);
+    padding-right: var(--sp-4);
+  }
+
+  .afx-comp-legend {
+    gap: var(--sp-4);
+  }
+}
+
+@media (max-width: 520px) {
+  .afx-instruments {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .afx-instrument {
+    border-right: 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .afx-instrument:last-child {
+    border-bottom: 0;
+  }
+
+  .afx-tabs {
+    gap: var(--sp-4);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   9. Secondary panels — liquidity summary & full-width ageing distribution
+   -------------------------------------------------------------------------- */
+
+.afx-chart-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--sp-4);
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--border-subtle);
+  font-size: 12.5px;
+}
+
+/* Reuses the instrument-panel idiom, seated at the foot of a card. */
+.afx-instruments-foot {
+  border-top: 1px solid var(--border);
+}
+
+.afx-instrument.is-negative .afx-inst-value {
+  color: var(--neg);
+}
+
+.afx-distribution {
+  margin-bottom: var(--sp-6);
+}
+
+.afx-dist-bar {
+  display: flex;
+  height: 34px;
+  border-radius: var(--rad-sm);
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+
+.afx-dist-seg {
+  height: 100%;
+  position: relative;
+  transition: filter var(--duration-fast) var(--ease-out);
+}
+
+.afx-dist-seg:hover {
+  filter: brightness(1.08);
+}
+
+.afx-dist-seg.is-critical {
+  /* The critical band is hatched as well as gold, so it survives a
+     greyscale print-out and colour-vision differences. */
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.34) 0 5px,
+    transparent 5px 10px
+  );
+}
+
+.afx-dist-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-top: var(--sp-3);
+  font-size: 12.5px;
+  color: var(--ink-secondary);
+}
+
+.afx-dist-meta b {
+  color: var(--ink);
+  font-weight: 750;
+}
+
+.afx-dist-critical {
+  color: var(--gold-ink);
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   10. Executive Summary — cross-module roll-up
+   -------------------------------------------------------------------------- */
+
+:root {
+  --bar-pos: var(--pos);
+  --bar-brand: var(--brand);
+  --bar-gold: var(--gold);
+  --bar-muted: var(--ink-faint);
+}
+
+.afx-summary-note {
+  margin: 0 0 var(--sp-5);
+  font-size: 12.5px;
+  color: var(--ink-secondary);
+  max-width: 68ch;
+}
+
+/* The headline strip on this screen is the whole band, with no split pane. */
+.afx-position.is-stacked {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* --- Ledger assurance banner --------------------------------------------- */
+
+.afx-assure {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+  padding: var(--sp-4) var(--sp-5);
+  margin-bottom: var(--sp-6);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--pos);
+  border-radius: var(--rad-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.afx-assure-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--pos-surface);
+  color: var(--pos);
+}
+
+.afx-assure-text {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.afx-assure-text b {
+  font-size: 13.5px;
+  font-weight: 750;
+  color: var(--ink);
+}
+
+.afx-assure-text span {
+  font-size: 12px;
+  color: var(--ink-secondary);
+}
+
+.afx-assure-figures {
+  display: flex;
+  gap: var(--sp-6);
+  margin: 0;
+  flex-wrap: wrap;
+}
+
+.afx-assure-figures div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.afx-assure-figures dt {
+  margin: 0;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.afx-assure-figures dd {
+  margin: 0;
+  font-family: var(--f-mono);
+  font-feature-settings: "tnum" 1;
+  font-size: 14px;
+  font-weight: 750;
+  color: var(--ink);
+  letter-spacing: -0.015em;
+}
+
+.afx-assure-figures dd.is-pos {
+  color: var(--pos);
+}
+
+/* --- Horizontal count bars ----------------------------------------------- */
+
+.afx-barlist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  padding-top: var(--sp-2);
+}
+
+.afx-barrow-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-bottom: 7px;
+}
+
+.afx-barrow-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  font-weight: 650;
+  color: var(--ink);
+}
+
+.afx-barrow-value {
+  font-family: var(--f-mono);
+  font-feature-settings: "tnum" 1;
+  font-size: 14px;
+  font-weight: 750;
+  color: var(--ink);
+}
+
+.afx-barrow-of {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+
+.afx-barrow-track {
+  height: 8px;
+  border-radius: var(--rad-pill);
+  background: var(--surface-alt);
+  box-shadow: inset 0 0 0 1px var(--border-subtle);
+  overflow: hidden;
+}
+
+.afx-barrow-fill {
+  display: block;
+  height: 100%;
+  border-radius: var(--rad-pill);
+  transform-origin: left center;
+  animation: afx-grow-x 0.7s var(--ease-out) both;
+}
+
+@keyframes afx-grow-x {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .afx-barrow-fill {
+    animation: none;
+  }
+}
+
+/* --- Status chips in the module table ------------------------------------ */
+
+.afx-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: var(--rad-pill);
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.afx-chip::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.afx-chip.is-pos {
+  color: var(--pos);
+  background: var(--pos-surface);
+  border-color: var(--pos-border);
+}
+
+.afx-chip.is-neg {
+  color: var(--neg);
+  background: var(--neg-surface);
+  border-color: var(--neg-border);
+}
+
+.afx-chip.is-gold {
+  color: var(--gold-ink);
+  background: var(--gold-surface);
+  border-color: var(--gold-border);
+}
+
+.afx-chip.is-brand {
+  color: var(--brand);
+  background: var(--brand-surface);
+  border-color: var(--brand-border);
+}
+
+@media (max-width: 720px) {
+  .afx-assure-figures {
+    gap: var(--sp-4);
+    width: 100%;
+  }
+}

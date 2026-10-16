@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Purchase Orders Procurement Deck · AFINTRIX ERP</title>
+  <meta name="description" content="Procurement commitments, supplier fulfillment tracking, and purchase order lifecycle management.">
+  <link rel="icon" type="image/png" href="assets/afintrix-symbol.png">
+  <link rel="stylesheet" href="css/sapphire.css">
+</head>
+<body>
+<div class="app" data-module="purchasing" data-section="list">
+  <main class="main">
+    <div data-crumb="Procurement &amp; Supply / Purchase Orders" hidden></div>
+
+    <!-- Page Header & Action Controls -->
+    <div class="page-title-banner animate-enter">
+      <div class="page-title-row">
+        <div class="page-headline-group">
+          <h1>Purchase Orders</h1>
+          <div class="page-caption">
+            <span>Afintrix (Demo) Entity</span>
+            <span>&middot;</span>
+            <span>Procure-to-Pay Lifecycle</span>
+            <span>&middot;</span>
+            <b class="num" style="color:var(--brand)">8 Active Commitments</b>
+          </div>
+        </div>
+
+        <div class="page-action-cluster">
+          <button class="btn btn-secondary btn-sm" data-open="dInspect">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+            <span>Inspector Deck</span>
+          </button>
+
+          <button class="btn btn-secondary btn-sm" data-toast="Procurement Export Ready|8 order records exported to XLSX.|info">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+            <span>Export</span>
+          </button>
+
+          <a class="btn btn-primary btn-sm" href="form.html">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+            <span>Create Order</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Status Filter Tabs -->
+      <div class="page-nav-tabs">
+        <button class="tab-nav-btn active">All Orders <span class="tab-count">8</span></button>
+        <button class="tab-nav-btn">To Receive <span class="tab-count">2</span></button>
+        <button class="tab-nav-btn">To Bill <span class="tab-count">1</span></button>
+        <button class="tab-nav-btn">Fulfilled <span class="tab-count">3</span></button>
+        <button class="tab-nav-btn">Drafts <span class="tab-count">1</span></button>
+      </div>
+    </div>
+
+    <!-- Viewport Canvas -->
+    <div class="page-viewport-canvas">
+
+      <!-- 1. Executive Procurement Metric Ribbon -->
+      <div style="display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));gap:16px;margin-bottom:20px" class="animate-enter animate-delay-1">
+        <div class="saas-card" style="padding:16px 20px">
+          <div style="font-size:11.5px;font-weight:600;color:var(--ink-muted);margin-bottom:4px">Total Committed Spend</div>
+          <div class="num" style="font-size:24px;font-weight:800;color:var(--brand)">$1,048,450<small style="font-size:14px">.00</small></div>
+          <div style="font-size:11px;color:var(--ink-secondary);margin-top:4px">49 total item units</div>
+        </div>
+
+        <div class="saas-card" style="padding:16px 20px">
+          <div style="font-size:11.5px;font-weight:600;color:var(--ink-muted);margin-bottom:4px">Awaiting Warehouse Receipt</div>
+          <div class="num" style="font-size:24px;font-weight:800;color:var(--ink)">2 <small style="font-size:14px;color:var(--ink-muted)">Orders</small></div>
+          <div style="font-size:11px;color:var(--brand);margin-top:4px;font-weight:600">Stores - AD target</div>
+        </div>
+
+        <div class="saas-card" style="padding:16px 20px">
+          <div style="font-size:11.5px;font-weight:600;color:var(--ink-muted);margin-bottom:4px">Pending Vendor Invoicing</div>
+          <div class="num" style="font-size:24px;font-weight:800;color:var(--warn)">1 <small style="font-size:14px;color:var(--ink-muted)">Order</small></div>
+          <div style="font-size:11px;color:var(--warn);margin-top:4px;font-weight:600">$62,300 outstanding</div>
+        </div>
+
+        <div class="saas-card" style="padding:16px 20px">
+          <div style="font-size:11.5px;font-weight:600;color:var(--ink-muted);margin-bottom:4px">Fulfilled &amp; Reconciled</div>
+          <div class="num" style="font-size:24px;font-weight:800;color:var(--pos)">3 <small style="font-size:14px;color:var(--ink-muted)">Orders</small></div>
+          <div style="font-size:11px;color:var(--pos);margin-top:4px;font-weight:600">100% Goods Receipted</div>
+        </div>
+      </div>
+
+      <!-- 2. Interactive Procurement Toolbar -->
+      <div class="saas-card animate-enter animate-delay-2" style="padding:12px 18px;margin-bottom:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:240px">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="color:var(--ink-muted)"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+          <input type="search" placeholder="Filter purchase orders by reference, supplier, date..." data-filter="#poTable" style="border:0;background:transparent;outline:0;font-size:13px;color:var(--ink);width:100%" aria-label="Filter orders">
+        </div>
+
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="status-badge blue">
+            <span>Status: To receive &amp; bill</span>
+            <button class="chip-remove-btn" aria-label="Clear filter">&times;</button>
+          </span>
+          <span class="status-badge neutral">
+            <span>Company: Afintrix (Demo)</span>
+            <button class="chip-remove-btn" aria-label="Clear filter">&times;</button>
+          </span>
+        </div>
+
+        <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+          <span class="status-badge blue" data-selcount style="display:none">0 selected</span>
+          <button class="btn btn-secondary btn-sm">＋ Filter</button>
+          <button class="btn btn-secondary btn-sm">Sort: Date &#9662;</button>
+        </div>
+      </div>
+
+      <!-- 3. High-Density Procurement Table -->
+      <div class="table-wrapper animate-enter animate-delay-3">
+        <div class="table-scroller">
+          <table class="saas-table" id="poTable" style="min-width:1040px">
+            <thead>
+              <tr>
+                <th style="width:40px"><span class="saas-checkbox" data-all></span></th>
+                <th class="sortable">Order Reference</th>
+                <th class="sortable">Supplier / Vendor</th>
+                <th class="sortable">Order Date</th>
+                <th class="sortable">Lifecycle Status</th>
+                <th class="align-right sortable">Lines</th>
+                <th class="align-right sortable">Total Value ($)</th>
+                <th class="align-right sortable">Receipt %</th>
+                <th class="align-right sortable">Billed %</th>
+                <th style="width:70px"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="selected">
+                <td><span class="saas-checkbox checked">✓</span></td>
+                <td class="primary-ref"><a href="form.html">PUR-ORD-2026-00042</a></td>
+                <td style="font-weight:600">
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <span style="width:24px;height:24px;border-radius:var(--rad-xs);background:var(--brand-surface);color:var(--brand);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">MS</span>
+                    <span>Meridian Supplies Ltd</span>
+                  </div>
+                </td>
+                <td class="numeric" data-sort="20260828">28-08-2026</td>
+                <td><span class="status-badge blue">To receive &amp; bill</span></td>
+                <td class="numeric">6</td>
+                <td class="numeric" style="font-weight:700">184,500.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0%</td>
+                <td class="numeric" style="color:var(--ink-muted)">0%</td>
+                <td style="text-align:right">
+                  <button class="btn btn-ghost btn-sm" data-open="dInspect" title="Open Inspector Deck">&#8943;</button>
+                </td>
+              </tr>
+
+              <tr>
+                <td><span class="saas-checkbox"></span></td>
+                <td class="primary-ref"><a href="form.html">PUR-ORD-2026-00041</a></td>
+                <td style="font-weight:600">
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <span style="width:24px;height:24px;border-radius:var(--rad-xs);background:var(--surface-alt);color:var(--ink-secondary);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">DO</span>
+                    <span>Dhaka Office Systems</span>
+                  </div>
+                </td>
+                <td class="numeric" data-sort="20260826">26-08-2026</td>
+                <td><span class="status-badge yellow">To bill</span></td>
+                <td class="numeric">3</td>
+                <td class="numeric" style="font-weight:700">62,300.00</td>
+                <td class="numeric" style="color:var(--pos);font-weight:700">100%</td>
+                <td class="numeric" style="color:var(--ink-muted)">0%</td>
+                <td style="text-align:right">
+                  <button class="btn btn-ghost btn-sm" data-open="dInspect" title="Open Inspector Deck">&#8943;</button>
+                </td>
+              </tr>
+
+              <tr>
+                <td><span class="saas-checkbox"></span></td>
+                <td class="primary-ref"><a href="form.html">PUR-ORD-2026-00040</a></td>
+                <td style="font-weight:600">
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <span style="width:24px;height:24px;border-radius:var(--rad-xs);background:var(--surface-alt);color:var(--ink-secondary);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">NC</span>
+                    <span>Nordic Components AB</span>
+                  </div>
+                </td>
+                <td class="numeric" data-sort="20260824">24-08-2026</td>
+                <td><span class="status-badge green"><span class="status-badge-dot"></span>Fulfilled</span></td>
+                <td class="numeric">12</td>
+                <td class="numeric" style="font-weight:700">341,900.00</td>
+                <td class="numeric" style="color:var(--pos);font-weight:700">100%</td>
+                <td class="numeric" style="color:var(--pos);font-weight:700">100%</td>
+                <td style="text-align:right">
+                  <button class="btn btn-ghost btn-sm" data-open="dInspect" title="Open Inspector Deck">&#8943;</button>
+                </td>
+              </tr>
+
+              <tr>
+                <td><span class="saas-checkbox"></span></td>
+                <td class="primary-ref"><a href="form.html">PUR-ORD-2026-00039</a></td>
+                <td style="font-weight:600">
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <span style="width:24px;height:24px;border-radius:var(--rad-xs);background:var(--surface-alt);color:var(--ink-secondary);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">BL</span>
+                    <span>Bengal Logistics</span>
+                  </div>
+                </td>
+                <td class="numeric" data-sort="20260822">22-08-2026</td>
+                <td><span class="status-badge blue">To receive</span></td>
+                <td class="numeric">2</td>
+                <td class="numeric" style="font-weight:700">18,750.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0%</td>
+                <td class="numeric" style="color:var(--pos);font-weight:700">100%</td>
+                <td style="text-align:right">
+                  <button class="btn btn-ghost btn-sm" data-open="dInspect" title="Open Inspector Deck">&#8943;</button>
+                </td>
+              </tr>
+
+              <tr>
+                <td><span class="saas-checkbox"></span></td>
+                <td class="primary-ref"><a href="form.html">PUR-ORD-2026-00038</a></td>
+                <td style="font-weight:600">
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <span style="width:24px;height:24px;border-radius:var(--rad-xs);background:var(--brand-surface);color:var(--brand);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">MS</span>
+                    <span>Meridian Supplies Ltd</span>
+                  </div>
+                </td>
+                <td class="numeric" data-sort="20260819">19-08-2026</td>
+                <td><span class="status-badge green"><span class="status-badge-dot"></span>Fulfilled</span></td>
+                <td class="numeric">8</td>
+                <td class="numeric" style="font-weight:700">97,400.00</td>
+                <td class="numeric" style="color:var(--pos);font-weight:700">100%</td>
+                <td class="numeric" style="color:var(--pos);font-weight:700">100%</td>
+                <td style="text-align:right">
+                  <button class="btn btn-ghost btn-sm" data-open="dInspect" title="Open Inspector Deck">&#8943;</button>
+                </td>
+              </tr>
+
+              <tr>
+                <td><span class="saas-checkbox"></span></td>
+                <td class="primary-ref"><a href="form.html">PUR-ORD-2026-00037</a></td>
+                <td style="font-weight:600">
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <span style="width:24px;height:24px;border-radius:var(--rad-xs);background:var(--neg-surface);color:var(--neg);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">AH</span>
+                    <span>Apex Hardware Co</span>
+                  </div>
+                </td>
+                <td class="numeric" data-sort="20260817">17-08-2026</td>
+                <td><span class="status-badge red">Cancelled</span></td>
+                <td class="numeric">4</td>
+                <td class="numeric" style="font-weight:700;color:var(--ink-muted)">45,200.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">&mdash;</td>
+                <td class="numeric" style="color:var(--ink-muted)">&mdash;</td>
+                <td style="text-align:right">
+                  <button class="btn btn-ghost btn-sm" data-open="dInspect" title="Open Inspector Deck">&#8943;</button>
+                </td>
+              </tr>
+
+              <tr>
+                <td><span class="saas-checkbox"></span></td>
+                <td class="primary-ref"><a href="form.html">PUR-ORD-2026-00036</a></td>
+                <td style="font-weight:600">
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <span style="width:24px;height:24px;border-radius:var(--rad-xs);background:var(--surface-alt);color:var(--ink-secondary);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">DO</span>
+                    <span>Dhaka Office Systems</span>
+                  </div>
+                </td>
+                <td class="numeric" data-sort="20260815">15-08-2026</td>
+                <td><span class="status-badge neutral">Draft</span></td>
+                <td class="numeric">5</td>
+                <td class="numeric" style="font-weight:700">71,600.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">&mdash;</td>
+                <td class="numeric" style="color:var(--ink-muted)">&mdash;</td>
+                <td style="text-align:right">
+                  <button class="btn btn-ghost btn-sm" data-open="dInspect" title="Open Inspector Deck">&#8943;</button>
+                </td>
+              </tr>
+
+              <tr>
+                <td><span class="saas-checkbox"></span></td>
+                <td class="primary-ref"><a href="form.html">PUR-ORD-2026-00035</a></td>
+                <td style="font-weight:600">
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <span style="width:24px;height:24px;border-radius:var(--rad-xs);background:var(--surface-alt);color:var(--ink-secondary);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">NC</span>
+                    <span>Nordic Components AB</span>
+                  </div>
+                </td>
+                <td class="numeric" data-sort="20260812">12-08-2026</td>
+                <td><span class="status-badge green"><span class="status-badge-dot"></span>Fulfilled</span></td>
+                <td class="numeric">9</td>
+                <td class="numeric" style="font-weight:700">226,800.00</td>
+                <td class="numeric" style="color:var(--pos);font-weight:700">100%</td>
+                <td class="numeric" style="color:var(--pos);font-weight:700">100%</td>
+                <td style="text-align:right">
+                  <button class="btn btn-ghost btn-sm" data-open="dInspect" title="Open Inspector Deck">&#8943;</button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td></td>
+                <td colspan="4" style="font-weight:700">Total Procurement Commitment &middot; 8 Orders</td>
+                <td class="numeric" style="font-weight:800">49</td>
+                <td class="numeric" style="font-weight:800;color:var(--brand)">1,048,450.00</td>
+                <td colspan="3"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-top:1px solid var(--border);background:var(--surface-alt);font-size:12.5px;color:var(--ink-secondary)">
+          <span data-count="Showing {n} of 8 orders">Showing 8 of 8 orders</span>
+          <div style="display:flex;align-items:center;gap:6px">
+            <span style="margin-right:6px">Rows:</span>
+            <button class="btn btn-secondary btn-sm" style="height:26px;padding:0 8px">20</button>
+            <button class="btn btn-ghost btn-sm" style="height:26px;padding:0 8px">100</button>
+            <button class="btn btn-ghost btn-sm" style="height:26px;padding:0 8px">500</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Side Inspector Drawer -->
+<div class="saas-drawer" id="dInspect">
+  <div class="drawer-header-deck">
+    <div style="display:flex;align-items:center;gap:10px">
+      <h3>PUR-ORD-2026-00042</h3>
+      <span class="status-badge blue">To receive &amp; bill</span>
+    </div>
+    <button class="btn btn-icon btn-sm" data-close>&times;</button>
+  </div>
+  <div class="drawer-body-deck">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px">
+      <div class="form-group">
+        <label class="form-label-deck">Target Supplier</label>
+        <div class="form-input is-readonly">Meridian Supplies Ltd</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label-deck">Order Date</label>
+        <div class="form-input is-readonly numeric">28-08-2026</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label-deck">Required ETA</label>
+        <div class="form-input is-readonly numeric">15-09-2026</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label-deck">Authorized Buyer</label>
+        <div class="form-input is-readonly">Rayna Torff</div>
+      </div>
+    </div>
+
+    <div style="font-size:13.5px;font-weight:700;margin-bottom:12px;display:flex;justify-content:space-between">
+      <span>Order Lines Specification</span>
+      <span class="num" style="color:var(--brand)">4 Items &middot; 17 Units</span>
+    </div>
+
+    <div class="table-wrapper" style="margin-bottom:20px">
+      <table class="saas-table dense">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th class="align-right">Qty</th>
+            <th class="align-right">Amount ($)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:600">SKU010 &middot; Camera Kit</td>
+            <td class="numeric">4</td>
+            <td class="numeric">2,800.00</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600">SKU009 &middot; Headphones</td>
+            <td class="numeric">10</td>
+            <td class="numeric">4,500.00</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600">SKU002 &middot; Laptop Core i7</td>
+            <td class="numeric">2</td>
+            <td class="numeric">136,000.00</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600">SKU007 &middot; Display Monitor</td>
+            <td class="numeric">1</td>
+            <td class="numeric">32,400.00</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td style="font-weight:700">Net Commitment</td>
+            <td class="numeric" style="font-weight:800">17</td>
+            <td class="numeric" style="font-weight:800;color:var(--brand)">175,700.00</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="banner-callout warning">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+      <div>
+        <div style="font-weight:700">Goods Receipt Outstanding</div>
+        <div style="font-size:12px;color:var(--ink-secondary)">Required at Stores - AD by 15 September 2026 (14 calendar days remaining).</div>
+      </div>
+    </div>
+  </div>
+  <div class="drawer-footer-deck">
+    <button class="btn btn-secondary btn-sm" data-close>Close</button>
+    <a class="btn btn-secondary btn-sm" href="form.html">Edit In Studio</a>
+    <button class="btn btn-primary btn-sm" data-toast="Receipt Initiated|A draft Goods Receipt Note GRN-2026-00018 has been generated.|success" data-close-after>Receive Stock</button>
+  </div>
+</div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

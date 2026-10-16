@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trial Balance &amp; Statutory Ledger · AFINTRIX ERP</title>
+  <meta name="description" content="Statutory Trial Balance, general ledger reconciliation, and hierarchical Chart of Accounts audit.">
+  <link rel="icon" type="image/png" href="assets/afintrix-symbol.png">
+  <link rel="stylesheet" href="css/sapphire.css">
+</head>
+<body>
+<div class="app" data-module="accounting" data-section="report">
+  <main class="main">
+    <div data-crumb="Financial Operations / Reporting / Trial Balance" hidden></div>
+
+    <!-- Page Title & Header Actions -->
+    <div class="page-title-banner animate-enter">
+      <div class="page-title-row">
+        <div class="page-headline-group">
+          <h1>Trial Balance &amp; General Ledger</h1>
+          <div class="page-caption">
+            <span>Afintrix (Demo) Entity</span>
+            <span>&middot;</span>
+            <span>01 July 2026 &rarr; 30 June 2027</span>
+            <span>&middot;</span>
+            <span class="status-badge green"><span class="status-badge-dot"></span>Books in Balance</span>
+          </div>
+        </div>
+
+        <div class="page-action-cluster">
+          <button class="btn btn-secondary btn-sm" data-open="dFilters">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/></svg>
+            <span>Options</span>
+            <span class="tab-count" style="margin-left:4px">7</span>
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="window.print()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+            <span>Print Report</span>
+          </button>
+          <button class="btn btn-primary btn-sm" data-toast="Audit Pack Exporting|Statutory Trial Balance exporting to XLSX format.|info">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+            <span>Export Statement</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Financial Report Family Tabs -->
+      <div class="page-nav-tabs">
+        <button class="tab-nav-btn active">Trial Balance</button>
+        <button class="tab-nav-btn">Profit &amp; Loss</button>
+        <button class="tab-nav-btn">Balance Sheet</button>
+        <button class="tab-nav-btn">Cash Flow Statement</button>
+      </div>
+    </div>
+
+    <!-- Viewport Canvas -->
+    <div class="page-viewport-canvas">
+
+      <!-- 1. Audit Reconciliation Hero Banner -->
+      <div class="saas-card animate-enter animate-delay-1" style="padding:18px 24px;margin-bottom:20px;background:linear-gradient(135deg, var(--surface) 0%, var(--surface-alt) 100%)">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px">
+          <div style="display:flex;align-items:center;gap:14px">
+            <div style="width:38px;height:38px;border-radius:var(--rad-md);background:var(--pos-surface);color:var(--pos);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            </div>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:var(--ink)">Statutory Audit Status: Ledger in Equilibrium</div>
+              <div style="font-size:12px;color:var(--ink-secondary)">Debits and credits match across all active general ledger sub-accounts.</div>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:24px">
+            <div>
+              <div style="font-size:11px;font-weight:600;color:var(--ink-muted);text-transform:uppercase">Total Debits</div>
+              <div class="num" style="font-size:18px;font-weight:800;color:var(--brand)">$ 1,177,861.00</div>
+            </div>
+            <div style="width:1px;height:24px;background:var(--border)"></div>
+            <div>
+              <div style="font-size:11px;font-weight:600;color:var(--ink-muted);text-transform:uppercase">Total Credits</div>
+              <div class="num" style="font-size:18px;font-weight:800;color:var(--brand)">$ 1,177,861.00</div>
+            </div>
+            <div style="width:1px;height:24px;background:var(--border)"></div>
+            <div>
+              <div style="font-size:11px;font-weight:600;color:var(--ink-muted);text-transform:uppercase">Variance Delta</div>
+              <div class="num" style="font-size:18px;font-weight:800;color:var(--pos)">$ 0.00</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Query Parameter Controls -->
+      <div class="saas-card animate-enter animate-delay-2" style="padding:14px 20px;margin-bottom:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+        <div class="form-group" style="min-width:180px">
+          <label class="form-label-deck" style="font-size:11px">Operating Entity</label>
+          <select class="form-input" style="height:32px">
+            <option>Afintrix (Demo)</option>
+            <option>Afintrix Global Ltd</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="min-width:130px">
+          <label class="form-label-deck" style="font-size:11px">Fiscal Year</label>
+          <select class="form-input" style="height:32px">
+            <option>2026-2027</option>
+            <option>2025-2026</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="min-width:140px">
+          <label class="form-label-deck" style="font-size:11px">Start Date</label>
+          <input type="date" class="form-input" style="height:32px" value="2026-07-01">
+        </div>
+
+        <div class="form-group" style="min-width:140px">
+          <label class="form-label-deck" style="font-size:11px">End Date</label>
+          <input type="date" class="form-input" style="height:32px" value="2027-06-30">
+        </div>
+
+        <div style="margin-left:auto;display:flex;align-items:flex-end;gap:10px">
+          <button class="btn btn-secondary btn-sm" data-open="dFilters">Audit Options</button>
+          <button class="btn btn-primary btn-sm" data-toast="Statement Recalculated|Trial Balance refreshed for selected parameters.|success">
+            Recalculate Statement
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. Active Rule Chips -->
+      <div class="filter-chip-row" style="margin-bottom:16px">
+        <span class="status-badge blue">
+          <span>Group Accounts: Expanded</span>
+          <button class="chip-remove-btn">&times;</button>
+        </span>
+        <span class="status-badge blue">
+          <span>Net Opening / Closing: Enabled</span>
+          <button class="chip-remove-btn">&times;</button>
+        </span>
+        <span class="status-badge neutral">
+          <span>Zero Balances: Suppressed</span>
+          <button class="chip-remove-btn">&times;</button>
+        </span>
+        <span class="status-badge neutral">
+          <span>Period Closing Entries: Included</span>
+          <button class="chip-remove-btn">&times;</button>
+        </span>
+      </div>
+
+      <!-- 4. Hierarchical Ledger Accounts Table -->
+      <div class="table-wrapper animate-enter animate-delay-3">
+        <div class="card-header-bar">
+          <div>
+            <h3>Chart of Accounts Balances</h3>
+            <div class="card-subtext">16 ledger accounts &middot; Figures aligned in USD ($)</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="display:flex;align-items:center;gap:8px;background:var(--surface-alt);border:1px solid var(--border);border-radius:var(--rad-md);padding:0 10px;height:32px">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="color:var(--ink-muted)"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+              <input type="search" placeholder="Search accounts..." data-filter="#tbTable" style="border:0;background:transparent;outline:0;font-size:12.5px;color:var(--ink);width:160px">
+            </div>
+            <button class="btn btn-secondary btn-sm">Compact View &#9662;</button>
+          </div>
+        </div>
+
+        <div class="table-scroller">
+          <table class="saas-table dense" id="tbTable" style="min-width:1040px">
+            <thead>
+              <tr>
+                <th style="min-width:280px">Ledger Account</th>
+                <th class="align-right sortable">Opening (Dr)</th>
+                <th class="align-right sortable">Opening (Cr)</th>
+                <th class="align-right sortable">Debit</th>
+                <th class="align-right sortable">Credit</th>
+                <th class="align-right sortable">Closing (Dr)</th>
+                <th class="align-right sortable">Closing (Cr)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- ASSETS -->
+              <tr style="background:var(--surface-alt)">
+                <td style="font-weight:800;color:var(--brand)" data-lvl="0">
+                  <span class="tree-toggle-icon" data-level="0" style="color:var(--brand);margin-right:4px">&#9662;</span> Application of Funds (Assets)
+                </td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="font-weight:700">759,247.00</td>
+                <td class="numeric" style="font-weight:700">465,614.00</td>
+                <td class="numeric" style="font-weight:800;color:var(--brand)">293,633.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+              </tr>
+
+              <tr>
+                <td style="padding-left:24px;font-weight:700" data-lvl="1">
+                  <span class="tree-toggle-icon" data-level="1" style="margin-right:4px">&#9662;</span> Current Assets
+                </td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric">759,247.00</td>
+                <td class="numeric">465,614.00</td>
+                <td class="numeric" style="font-weight:700">293,633.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+              </tr>
+
+              <tr>
+                <td style="padding-left:42px;font-weight:600" data-lvl="2">
+                  <span class="tree-toggle-icon" data-level="2" style="margin-right:4px">&#9662;</span> Accounts Receivable
+                </td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric">363,100.00</td>
+                <td class="numeric">47,000.00</td>
+                <td class="numeric" style="font-weight:700">316,100.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+              </tr>
+
+              <tr>
+                <td style="padding-left:60px;color:var(--ink-secondary)" data-lvl="3">Debtors Outstanding</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric">363,100.00</td>
+                <td class="numeric">47,000.00</td>
+                <td class="numeric" style="font-weight:600">316,100.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+              </tr>
+
+              <tr>
+                <td style="padding-left:42px;font-weight:600" data-lvl="2">
+                  <span class="tree-toggle-icon" data-level="2" style="margin-right:4px">&#9662;</span> Bank Accounts
+                </td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric">47,000.00</td>
+                <td class="numeric">164,854.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="font-weight:700;color:var(--neg)">117,854.00</td>
+              </tr>
+
+              <tr>
+                <td style="padding-left:60px;color:var(--ink-secondary)" data-lvl="3">Demo Bank Account</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric">47,000.00</td>
+                <td class="numeric">164,854.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="color:var(--neg)">117,854.00</td>
+              </tr>
+
+              <tr>
+                <td style="padding-left:42px;font-weight:600" data-lvl="2">
+                  <span class="tree-toggle-icon" data-level="2" style="margin-right:4px">&#9662;</span> Stock Assets
+                </td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric">349,147.00</td>
+                <td class="numeric">253,760.00</td>
+                <td class="numeric" style="font-weight:700">95,387.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+              </tr>
+
+              <tr>
+                <td style="padding-left:60px;color:var(--ink-secondary)" data-lvl="3">Stock In Hand (Stores - AD)</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric">349,147.00</td>
+                <td class="numeric">253,760.00</td>
+                <td class="numeric" style="font-weight:600">95,387.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+              </tr>
+
+              <!-- LIABILITIES -->
+              <tr style="background:var(--surface-alt)">
+                <td style="font-weight:800;color:var(--brand)" data-lvl="0">
+                  <span class="tree-toggle-icon" data-level="0" style="color:var(--brand);margin-right:4px">&#9662;</span> Source of Funds (Liabilities)
+                </td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="font-weight:700">164,854.00</td>
+                <td class="numeric" style="font-weight:700">349,147.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="font-weight:800;color:var(--brand)">184,293.00</td>
+              </tr>
+
+              <tr>
+                <td style="padding-left:24px;font-weight:700" data-lvl="1">
+                  <span class="tree-toggle-icon" data-level="1" style="margin-right:4px">&#9662;</span> Current Liabilities
+                </td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric">164,854.00</td>
+                <td class="numeric">349,147.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="font-weight:700">184,293.00</td>
+              </tr>
+
+              <tr>
+                <td style="padding-left:42px;font-weight:600" data-lvl="2">
+                  <span class="tree-toggle-icon" data-level="2" style="margin-right:4px">&#9662;</span> Accounts Payable
+                </td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric">164,854.00</td>
+                <td class="numeric">349,147.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="font-weight:700">184,293.00</td>
+              </tr>
+
+              <tr>
+                <td style="padding-left:60px;color:var(--ink-secondary)" data-lvl="3">Creditors Commercial Ledger</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric">164,854.00</td>
+                <td class="numeric">349,147.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="font-weight:600">184,293.00</td>
+              </tr>
+
+              <!-- INCOME -->
+              <tr style="background:var(--surface-alt)">
+                <td style="font-weight:800;color:var(--brand)" data-lvl="0">
+                  <span class="tree-toggle-icon" data-level="0" style="color:var(--brand);margin-right:4px">&#9662;</span> Operating Revenue (Income)
+                </td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="font-weight:700">363,100.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="font-weight:800;color:var(--brand)">363,100.00</td>
+              </tr>
+
+              <tr>
+                <td style="padding-left:24px;font-weight:600" data-lvl="1">Direct Sales Operating Income</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric">363,100.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="font-weight:600">363,100.00</td>
+              </tr>
+
+              <!-- EXPENSES -->
+              <tr style="background:var(--surface-alt)">
+                <td style="font-weight:800;color:var(--brand)" data-lvl="0">
+                  <span class="tree-toggle-icon" data-level="0" style="color:var(--brand);margin-right:4px">&#9662;</span> Operational Expenses
+                </td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="font-weight:700">253,760.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="font-weight:800;color:var(--brand)">253,760.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+              </tr>
+
+              <tr>
+                <td style="padding-left:24px;font-weight:600" data-lvl="1">Cost of Goods Sold (COGS)</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric">253,760.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="font-weight:600">253,760.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td style="font-weight:800">Balanced Ledger Grand Total</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="color:var(--ink-muted)">0.00</td>
+                <td class="numeric" style="font-weight:800">1,177,861.00</td>
+                <td class="numeric" style="font-weight:800">1,177,861.00</td>
+                <td class="numeric" style="font-weight:800;color:var(--brand)">547,393.00</td>
+                <td class="numeric" style="font-weight:800;color:var(--brand)">547,393.00</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-top:1px solid var(--border);background:var(--surface-alt);font-size:12.5px;color:var(--ink-secondary)">
+          <span data-count="{n} accounts listed">16 accounts listed</span>
+          <span style="color:var(--pos);font-weight:700;display:flex;align-items:center;gap:6px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            <span>Audit check passed: Total Debits equal Total Credits (Variance 0.00)</span>
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Drawer: Trial Balance Parameters -->
+<div class="saas-drawer" id="dFilters">
+  <div class="drawer-header-deck">
+    <h3>Statutory Audit Parameters</h3>
+    <button class="btn btn-icon btn-sm" data-close>&times;</button>
+  </div>
+  <div class="drawer-body-deck">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="form-group">
+        <label class="form-label-deck">Operating Cost Center</label>
+        <select class="form-input">
+          <option>All Cost Centers (Consolidated)</option>
+          <option>Main - AD</option>
+          <option>Dhaka Branch - AD</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label-deck">Project Ledger Filter</label>
+        <select class="form-input">
+          <option>All Projects</option>
+          <option>ERP Core Migration 2026</option>
+          <option>Logistics Hub Expansion</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label-deck">Statutory Accounting Book</label>
+        <select class="form-input">
+          <option>All Finance Books</option>
+          <option>National Statutory Tax Book</option>
+          <option>Internal Management Accounts</option>
+        </select>
+      </div>
+
+      <div style="border-top:1px solid var(--border-subtle);padding-top:18px;display:flex;flex-direction:column;gap:14px">
+        <label class="checkbox-option">
+          <input type="checkbox" checked>
+          <span class="checkbox-square">✓</span>
+          <div>
+            <div style="font-weight:700;font-size:13px">Show Hierarchical Group Accounts</div>
+            <div class="form-validation-hint">Roll child account values up into parent category summaries.</div>
+          </div>
+        </label>
+
+        <label class="checkbox-option">
+          <input type="checkbox" checked>
+          <span class="checkbox-square">✓</span>
+          <div>
+            <div style="font-weight:700;font-size:13px">Net Opening and Closing Values</div>
+            <div class="form-validation-hint">Consolidate debit and credit columns into single net balances.</div>
+          </div>
+        </label>
+
+        <label class="checkbox-option">
+          <input type="checkbox" checked>
+          <span class="checkbox-square">✓</span>
+          <div>
+            <div style="font-weight:700;font-size:13px">With Period Closing Vouchers</div>
+            <div class="form-hint">Include year-end closing entries in opening balances.</div>
+          </div>
+        </label>
+
+        <label class="checkbox-option">
+          <input type="checkbox">
+          <span class="checkbox-square"></span>
+          <div>
+            <div style="font-weight:700;font-size:13px">Display Zero-Balance Accounts</div>
+            <div class="form-validation-hint">Show inactive accounts with nil debits and credits.</div>
+          </div>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="drawer-footer-deck">
+    <button class="btn btn-secondary btn-sm" data-toast="Options Reset|Report parameters restored to standard defaults.|info">Reset Defaults</button>
+    <button class="btn btn-primary btn-sm" data-toast="Parameters Applied|Trial Balance recalculated with selected criteria.|success" data-close-after>Apply Audit Parameters</button>
+  </div>
+</div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

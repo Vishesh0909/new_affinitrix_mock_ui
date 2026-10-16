@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Executive Summary &middot; AFINTRIX ERP</title>
+  <meta name="description" content="Enterprise-wide summary of financial, procurement, and workforce position for Afintrix (Demo) Entity.">
+  <meta property="og:title" content="AFINTRIX ERP &middot; Executive Summary">
+  <meta property="og:description" content="Enterprise-wide summary of financial, procurement, and workforce position.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/png" href="assets/afintrix-symbol.png">
+  <link rel="stylesheet" href="css/sapphire.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+<a class="afx-skip" href="#afxMain">Skip to summary content</a>
+<div class="app" data-module="accounting" data-section="executive">
+  <main class="main" id="afxMain" tabindex="-1">
+    <div data-crumb="Afintrix / Executive Summary" hidden></div>
+
+    <div class="afx-page">
+     <div class="afx-page-inner">
+
+      <!-- Command bar -->
+      <div class="afx-commandbar">
+        <div class="afx-title-group">
+          <div class="afx-eyebrow">Enterprise Position</div>
+          <h1>Executive Summary</h1>
+          <div class="afx-context">
+            <span>Afintrix (Demo) Entity</span>
+            <span class="afx-sep"></span>
+            <span>Dhaka AD &middot; FY 2026&ndash;2027</span>
+            <span class="afx-sep"></span>
+            <span>As at <b data-exec-asof>August 2026</b></span>
+          </div>
+        </div>
+
+        <div class="afx-actions">
+          <a href="index.html" class="btn btn-secondary btn-sm">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+            <span>Financial Overview</span>
+          </a>
+          <a href="report.html" class="btn btn-primary btn-sm">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+            <span>Export Statement</span>
+          </a>
+        </div>
+      </div>
+
+      <p class="afx-summary-note">
+        A roll-up across every module. Figures are summary level only &mdash;
+        open a module for transaction detail.
+      </p>
+
+      <!-- Enterprise headline position -->
+      <div class="afx-position is-stacked" data-reveal>
+        <div class="afx-instruments" data-exec-headlines></div>
+      </div>
+
+      <!-- Ledger assurance -->
+      <div data-reveal data-exec-ledger></div>
+
+      <!-- Financial trajectory + receivables -->
+      <div class="afx-grid is-primary">
+        <article class="afx-card" data-reveal>
+          <header class="afx-card-head">
+            <div>
+              <h2>Revenue &amp; Expenditure Trajectory</h2>
+              <p class="afx-card-sub">FY 2026&ndash;2027 &middot; recorded through August 2026</p>
+            </div>
+            <a href="index.html" class="btn btn-ghost btn-sm" style="color:var(--brand);font-weight:700">Detail &rarr;</a>
+          </header>
+          <div class="afx-card-body">
+            <div data-chart="exec-trajectory"></div>
+          </div>
+        </article>
+
+        <article class="afx-card" data-reveal>
+          <header class="afx-card-head">
+            <div>
+              <h2>Receivables Ageing</h2>
+              <p class="afx-card-sub">Distribution across four bands</p>
+            </div>
+            <a href="index.html#rec" class="btn btn-ghost btn-sm" style="color:var(--brand);font-weight:700">Detail &rarr;</a>
+          </header>
+          <div class="afx-card-body">
+            <div data-chart="exec-ageing"></div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Liquidity + procurement -->
+      <div class="afx-grid is-primary">
+        <article class="afx-card" data-reveal>
+          <header class="afx-card-head">
+            <div>
+              <h2>Cash &amp; Bank Liquidity</h2>
+              <p class="afx-card-sub">12-month trajectory &middot; principal operating account</p>
+            </div>
+            <a href="index.html#cash" class="btn btn-ghost btn-sm" style="color:var(--brand);font-weight:700">Detail &rarr;</a>
+          </header>
+          <div class="afx-card-body">
+            <div data-chart="exec-liquidity"></div>
+          </div>
+        </article>
+
+        <article class="afx-card" data-reveal>
+          <header class="afx-card-head">
+            <div>
+              <h2>Procurement Lifecycle</h2>
+              <p class="afx-card-sub">Order position by stage</p>
+            </div>
+            <a href="list.html" class="btn btn-ghost btn-sm" style="color:var(--brand);font-weight:700">Detail &rarr;</a>
+          </header>
+          <div class="afx-card-body">
+            <div class="afx-barlist" data-exec-procurement></div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Workforce -->
+      <article class="afx-card" data-reveal style="margin-bottom:var(--sp-6)">
+        <header class="afx-card-head">
+          <div>
+            <h2>People &amp; Operations</h2>
+            <p class="afx-card-sub">Workforce and payroll position</p>
+          </div>
+          <a href="portal.html" class="btn btn-ghost btn-sm" style="color:var(--brand);font-weight:700">Detail &rarr;</a>
+        </header>
+        <div class="afx-card-body is-flush">
+          <div class="afx-instruments" data-exec-workforce></div>
+        </div>
+      </article>
+
+      <!-- Module roll-up table -->
+      <article class="afx-card" data-reveal>
+        <header class="afx-card-head">
+          <div>
+            <h2>Module Summary</h2>
+            <p class="afx-card-sub">Headline position for each workspace</p>
+          </div>
+        </header>
+        <div class="afx-card-body is-flush">
+          <div class="table-scroller">
+            <table class="saas-table dense">
+              <thead>
+                <tr>
+                  <th>Module</th>
+                  <th>Measure</th>
+                  <th class="align-right">Value</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody data-exec-modules></tbody>
+            </table>
+          </div>
+        </div>
+      </article>
+
+     </div>
+    </div>
+  </main>
+</div>
+
+<script type="module" src="js/app.js"></script>
+<script type="module" src="js/executive.js"></script>
+</body>
+</html>

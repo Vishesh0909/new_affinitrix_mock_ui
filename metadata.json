@@ -1,0 +1,6 @@
+{
+  "name": "AFINTRIX ERP",
+  "description": "Modern enterprise-grade ERP workspace connecting finance, procurement, human resources, and business operations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

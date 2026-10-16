@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 240" fill="none" role="img" aria-label="AFINTRIX Logo">
+  <defs>
+    <linearGradient id="afxGold" x1="0%" y1="0%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#C8983E"/>
+      <stop offset="50%" stop-color="#E2BE72"/>
+      <stop offset="100%" stop-color="#D5AA55"/>
+    </linearGradient>
+  </defs>
+  <!-- Triangular Mark (Symbol) centered at x=300, y=80 -->
+  <g id="symbol" transform="translate(195, 8) scale(0.92)">
+    <!-- Top Apex Triangle -->
+    <path d="M 115 10 L 155 76 L 75 76 Z" fill="#1E39D6"/>
+
+    <!-- Left Upper Stripe -->
+    <polygon points="56,76 72,76 110,14 100,14" fill="#1E39D6"/>
+    <!-- Left Mid Chevron -->
+    <polygon points="42,98 62,98 84,62 70,62" fill="#1E39D6"/>
+    <!-- Left Lower Chevron -->
+    <polygon points="26,126 48,126 72,86 58,86" fill="#1E39D6"/>
+
+    <!-- Right Upper Stripe -->
+    <polygon points="158,76 174,76 130,14 120,14" fill="#1E39D6"/>
+    <!-- Right Mid Chevron -->
+    <polygon points="168,98 188,98 160,62 146,62" fill="#1E39D6"/>
+    <!-- Right Lower Chevron -->
+    <polygon points="182,126 204,126 172,86 158,86" fill="#1E39D6"/>
+
+    <!-- Center Base Triangle Columns -->
+    <polygon points="88,94 104,94 115,134 101,134" fill="#1E39D6"/>
+    <polygon points="126,94 142,94 129,134 115,134" fill="#1E39D6"/>
+
+    <!-- Dynamic Flowing Gold Ribbon / Wave cutting across center -->
+    <path d="M 18,120 C 45,95 80,72 125,78 C 160,83 185,62 208,44 C 196,62 165,108 118,98 C 82,90 50,110 18,120 Z" fill="url(#afxGold)"/>
+  </g>
+
+  <!-- AFINTRIX Wordmark -->
+  <g fill="#1E39D6" font-family="'Montserrat', 'Plus Jakarta Sans', system-ui, sans-serif" font-weight="900" font-size="54" letter-spacing="4">
+    <text x="300" y="214" text-anchor="middle">AFINTRIX</text>
+  </g>
+</svg>

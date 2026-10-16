@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AFINTRIX ERP — One Intelligent Workspace for Business Operations</title>
+  <meta name="description" content="Bring finance, procurement, workforce operations, and business reporting together in a connected, organized workspace.">
+  <link rel="icon" type="image/png" href="assets/afintrix-symbol.png">
+  <link rel="stylesheet" href="css/sapphire.css">
+  <style>
+    .landing-body {
+      min-height: 100vh;
+      background: var(--canvas);
+      color: var(--ink);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .landing-header {
+      height: 72px;
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 60;
+    }
+
+    .landing-hero {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 24px 40px;
+      text-align: center;
+    }
+
+    .landing-hero h1 {
+      font-size: clamp(34px, 4.8vw, 56px);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.035em;
+      color: var(--ink);
+      max-width: 860px;
+      margin: 0 auto 20px;
+      text-wrap: balance;
+    }
+
+    .landing-hero h1 span.brand-text {
+      color: var(--brand);
+    }
+
+    .landing-hero p {
+      font-size: clamp(16px, 1.8vw, 18px);
+      color: var(--ink-secondary);
+      max-width: 680px;
+      margin: 0 auto 36px;
+      line-height: 1.6;
+    }
+
+    .preview-container {
+      max-width: 1200px;
+      margin: 20px auto 80px;
+      padding: 0 24px;
+    }
+
+    .preview-window {
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--rad-xl);
+      box-shadow: var(--shadow-float);
+      overflow: hidden;
+    }
+
+    .preview-top-bar {
+      height: 44px;
+      background: var(--surface-alt);
+      border-bottom: 1px solid var(--border);
+      padding: 0 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .preview-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 99px;
+      background: var(--border-strong);
+    }
+
+    .preview-route {
+      margin-left: 12px;
+      font-size: 11.5px;
+      font-family: var(--f-mono);
+      color: var(--ink-muted);
+      background: var(--surface);
+      padding: 3px 14px;
+      border-radius: var(--rad-xs);
+      border: 1px solid var(--border);
+    }
+
+    .module-matrix-section {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 84px 24px;
+    }
+
+    .module-matrix-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 24px;
+      max-width: 1200px;
+      margin: 48px auto 0;
+    }
+
+    .module-card {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: var(--rad-lg);
+      padding: 28px;
+      transition: all var(--duration-normal) var(--ease-spring);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .module-card:hover {
+      background: var(--surface);
+      border-color: var(--brand-border);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .module-card-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--rad-md);
+      background: var(--brand-surface);
+      color: var(--brand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+
+    .module-card.gold-card .module-card-icon {
+      background: var(--gold-surface);
+      color: var(--gold-ink);
+    }
+
+    .module-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .module-card p {
+      font-size: 13.5px;
+      color: var(--ink-secondary);
+      line-height: 1.6;
+      margin: 0 0 20px;
+      flex: 1;
+    }
+
+    .module-action-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--brand);
+    }
+
+    .landing-footer {
+      padding: 48px 24px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body class="landing-body">
+
+  <!-- Top Header -->
+  <header class="landing-header">
+    <a href="landing.html" class="brand-link">
+      <img src="assets/afintrix-logo.png" alt="AFINTRIX" class="brand-full-logo">
+    </a>
+
+    <nav style="display:flex;align-items:center;gap:28px">
+      <a href="executive.html" style="font-size:13.5px;font-weight:600;color:var(--ink-secondary);transition:color 0.15s" onmouseover="this.style.color='var(--brand)'" onmouseout="this.style.color=''">Summary</a>
+      <a href="index.html" style="font-size:13.5px;font-weight:600;color:var(--ink-secondary);transition:color 0.15s" onmouseover="this.style.color='var(--brand)'" onmouseout="this.style.color=''">Financials</a>
+      <a href="list.html" style="font-size:13.5px;font-weight:600;color:var(--ink-secondary);transition:color 0.15s" onmouseover="this.style.color='var(--brand)'" onmouseout="this.style.color=''">Procurement</a>
+      <a href="record.html" style="font-size:13.5px;font-weight:600;color:var(--ink-secondary);transition:color 0.15s" onmouseover="this.style.color='var(--brand)'" onmouseout="this.style.color=''">People</a>
+      <a href="approval.html" style="font-size:13.5px;font-weight:600;color:var(--ink-secondary);transition:color 0.15s" onmouseover="this.style.color='var(--brand)'" onmouseout="this.style.color=''">Approvals</a>
+      <a href="report.html" style="font-size:13.5px;font-weight:600;color:var(--ink-secondary);transition:color 0.15s" onmouseover="this.style.color='var(--brand)'" onmouseout="this.style.color=''">Trial Balance</a>
+      <a href="portal.html" style="font-size:13.5px;font-weight:600;color:var(--ink-secondary);transition:color 0.15s" onmouseover="this.style.color='var(--brand)'" onmouseout="this.style.color=''">Employee Portal</a>
+    </nav>
+
+    <div style="display:flex;align-items:center;gap:12px">
+      <button class="action-icon-btn theme-toggle-trigger" id="landingThemeTrigger" title="Toggle Theme">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8z"/></svg>
+      </button>
+      <a href="executive.html" class="btn btn-primary btn-sm" style="padding:0 18px">
+        Launch ERP Workspace &rarr;
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="landing-hero animate-enter">
+    <div style="display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:var(--rad-pill);background:var(--brand-surface);border:1px solid var(--brand-border);color:var(--brand);font-size:12px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:24px">
+      <span>Enterprise Resource Planning</span>
+      <span style="opacity:0.4">&middot;</span>
+      <span>Next-Gen Operating System</span>
+    </div>
+
+    <h1>
+      One intelligent workspace for your <span class="brand-text">business operations</span>.
+    </h1>
+
+    <p>
+      Bring finance, procurement, workforce operations, and business reporting together in a connected, organized workspace.
+    </p>
+
+    <div style="display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap">
+      <a href="executive.html" class="btn btn-primary" style="height:44px;padding:0 26px;font-size:14px">
+        Open Executive Summary &rarr;
+      </a>
+      <a href="list.html" class="btn btn-secondary" style="height:44px;padding:0 22px;font-size:14px">
+        View Purchase Orders (8 Active)
+      </a>
+      <a href="portal.html" class="btn btn-ghost" style="height:44px;padding:0 18px;font-size:14px">
+        Employee Self-Service &rarr;
+      </a>
+    </div>
+  </section>
+
+  <!-- Interactive Live Product Preview -->
+  <div class="preview-container animate-enter animate-delay-1">
+    <div class="preview-window">
+      <div class="preview-top-bar">
+        <div class="preview-dot" style="background:#EF4444"></div>
+        <div class="preview-dot" style="background:#F59E0B"></div>
+        <div class="preview-dot" style="background:#10B981"></div>
+        <div class="preview-route">afintrix.internal/workspace/financials</div>
+        <span style="margin-left:auto;font-size:11.5px;color:var(--ink-muted);font-weight:600">Enterprise Node: Dhaka AD &middot; Reconciled</span>
+      </div>
+
+      <!-- Realistic Live Preview Content -->
+      <div style="padding:28px;background:var(--canvas)">
+        <div style="display:grid;grid-template-columns:1.2fr 2fr;gap:24px;align-items:center;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rad-lg);margin-bottom:20px">
+          <div>
+            <div style="font-size:11.5px;font-weight:700;text-transform:uppercase;color:var(--ink-muted)">Operating Surplus YTD</div>
+            <div class="num" style="font-size:32px;font-weight:800;color:var(--ink)">$ 109,340<small style="font-size:16px;color:var(--ink-muted)">.00</small></div>
+            <div style="font-size:12px;color:var(--pos);font-weight:700;margin-top:4px">+12.4% vs Previous Month</div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:12px">
+            <div style="padding:10px 14px;background:var(--surface-alt);border:1px solid var(--border);border-radius:var(--rad-md)">
+              <div style="font-size:11px;color:var(--ink-muted)">Outgoing Bills</div>
+              <div class="num" style="font-size:17px;font-weight:800">$ 3.63L</div>
+            </div>
+            <div style="padding:10px 14px;background:var(--surface-alt);border:1px solid var(--border);border-radius:var(--rad-md)">
+              <div style="font-size:11px;color:var(--ink-muted)">Incoming Bills</div>
+              <div class="num" style="font-size:17px;font-weight:800">$ 3.49L</div>
+            </div>
+            <div style="padding:10px 14px;background:var(--gold-surface);border:1px solid var(--gold-border);border-radius:var(--rad-md)">
+              <div style="font-size:11px;color:var(--gold-ink);font-weight:700">Overdue &gt;90d</div>
+              <div class="num" style="font-size:17px;font-weight:800;color:var(--gold-ink)">$ 38.50K</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lower Preview Split -->
+        <div style="display:grid;grid-template-columns:2fr 1fr;gap:20px">
+          <div class="saas-card" style="padding:18px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:12px;font-size:13px;font-weight:700">
+              <span>Fiscal Revenue &amp; Expenditure Flow</span>
+              <span style="font-size:11px;color:var(--ink-muted)">FY 2026-2027</span>
+            </div>
+            <div style="height:100px;display:flex;align-items:flex-end;gap:18px;border-bottom:1px solid var(--border);padding-bottom:8px">
+              <div style="flex:1;height:80px;background:var(--brand);border-radius:3px 3px 0 0"></div>
+              <div style="flex:1;height:95px;background:var(--brand);border-radius:3px 3px 0 0"></div>
+              <div style="flex:1;height:30px;background:var(--border);border-radius:3px 3px 0 0"></div>
+              <div style="flex:1;height:20px;background:var(--border-subtle);border-radius:3px 3px 0 0"></div>
+              <div style="flex:1;height:16px;background:var(--border-subtle);border-radius:3px 3px 0 0"></div>
+            </div>
+            <div style="display:flex;gap:18px;margin-top:10px;font-size:12px">
+              <span>Income: <b class="num">$363.1K</b></span>
+              <span>Expenses: <b class="num">$253.8K</b></span>
+              <span style="color:var(--pos);font-weight:700">Net Margin: 30.1%</span>
+            </div>
+          </div>
+
+          <div class="saas-card" style="padding:18px">
+            <div style="font-size:13px;font-weight:700;margin-bottom:12px">Governance Triage</div>
+            <div style="display:flex;flex-direction:column;gap:8px;font-size:12px">
+              <div style="display:flex;justify-content:space-between;padding:6px 8px;background:var(--surface-alt);border-radius:var(--rad-xs)">
+                <span>Hanna B. Leave Request</span>
+                <span class="status-badge yellow" style="height:18px">3 Days</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:6px 8px;background:var(--surface-alt);border-radius:var(--rad-xs)">
+                <span>Meridian Supplies PO</span>
+                <span class="status-badge blue" style="height:18px">$184.5K</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:6px 8px;background:var(--surface-alt);border-radius:var(--rad-xs)">
+                <span>Bank Reconciliation</span>
+                <span class="status-badge neutral" style="height:18px">12 Lines</span>
+              </div>
+            </div>
+            <a href="executive.html" class="btn btn-secondary btn-sm" style="width:100%;margin-top:12px">Enter Full Workspace</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Connected ERP Modules Matrix -->
+  <section class="module-matrix-section">
+    <div style="max-width:1200px;margin:0 auto;text-align:center">
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--brand);margin-bottom:8px">Platform Architecture</div>
+      <h2 style="font-size:32px;font-weight:800;letter-spacing:-0.03em">Dedicated Operational Modules</h2>
+      <p style="font-size:16px;color:var(--ink-secondary);max-width:600px;margin:10px auto 0">
+        Every operational discipline connected into one coherent financial and governance workflow.
+      </p>
+
+      <div class="module-matrix-grid">
+        <div class="module-card">
+          <div class="module-card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+          </div>
+          <h3>Accounting &amp; Financial Reporting</h3>
+          <p>Real-time general ledger, automated bill management, accounts receivable ageing, and fiscal year financial metrics.</p>
+          <a href="index.html" class="module-action-link">Open Financials &rarr;</a>
+        </div>
+
+        <div class="module-card">
+          <div class="module-card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+          </div>
+          <h3>Purchasing &amp; Purchase Orders</h3>
+          <p>Structured procurement workflows, supplier tracking, automated goods receipt status, and itemized line-item order forms.</p>
+          <a href="list.html" class="module-action-link">Open Procurement &rarr;</a>
+        </div>
+
+        <div class="module-card">
+          <div class="module-card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+          </div>
+          <h3>Employee Records &amp; People</h3>
+          <p>Comprehensive HR profiles, designation hierarchies, verified bank mandates, salary structures, and document vaults.</p>
+          <a href="record.html" class="module-action-link">Open HR Dossier &rarr;</a>
+        </div>
+
+        <div class="module-card gold-card">
+          <div class="module-card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+          </div>
+          <h3>Leave Approvals &amp; Governance</h3>
+          <p>Multi-step decision flow with automated departmental coverage checks, balance verification, and approval queues.</p>
+          <a href="approval.html" class="module-action-link" style="color:var(--gold-ink)">Review Approvals &rarr;</a>
+        </div>
+
+        <div class="module-card">
+          <div class="module-card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg>
+          </div>
+          <h3>Employee Self-Service Portal</h3>
+          <p>Instant daily check-in attendance, expense reimbursement claim submission, payslip archive download, and balance tracker.</p>
+          <a href="portal.html" class="module-action-link">Launch Portal &rarr;</a>
+        </div>
+
+        <div class="module-card">
+          <div class="module-card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+          </div>
+          <h3>Trial Balance &amp; Statutory Reports</h3>
+          <p>Collapsible multi-level Chart of Accounts tree, debit/credit reconciliations, date interval filters, and export pipelines.</p>
+          <a href="report.html" class="module-action-link">Audit Ledger &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="landing-footer">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <img src="assets/afintrix-symbol.svg" alt="AFINTRIX" style="height:28px">
+        <span style="font-weight:700;font-size:14px">AFINTRIX ERP</span>
+        <span style="font-size:12px;color:var(--ink-secondary)">&middot; Commercial Enterprise Platform</span>
+      </div>
+
+      <div style="display:flex;gap:20px;font-size:13px;color:var(--ink-secondary)">
+        <a href="index.html">Financials</a>
+        <a href="list.html">Purchase Orders</a>
+        <a href="record.html">Personnel</a>
+        <a href="approval.html">Governance</a>
+        <a href="portal.html">Self-Service</a>
+        <a href="report.html">Trial Balance</a>
+      </div>
+
+      <div style="font-size:12px;color:var(--ink-muted)">
+        &copy; 2026 AFINTRIX. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
