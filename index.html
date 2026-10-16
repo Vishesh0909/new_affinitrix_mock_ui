@@ -3,266 +3,167 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Financial Overview &middot; AFINTRIX ERP</title>
-  <meta name="description" content="Modern enterprise-grade ERP workspace connecting finance, procurement, human resources, and business operations.">
+  <title>AFINTRIX ERP &middot; One workspace for business operations</title>
+  <meta name="description" content="Enterprise-grade ERP workspace connecting finance, procurement, human resources, and business operations for Afintrix.">
   <meta property="og:title" content="AFINTRIX ERP">
-  <meta property="og:description" content="Modern enterprise-grade ERP workspace connecting finance, procurement, human resources, and business operations.">
+  <meta property="og:description" content="One workspace connecting finance, procurement, people and reporting.">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/png" href="assets/afintrix-symbol.png">
   <link rel="stylesheet" href="css/sapphire.css">
   <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/home.css">
 </head>
-<body>
-<a class="afx-skip" href="#afxMain">Skip to financial content</a>
-<div class="app" data-module="accounting" data-section="dashboard">
-  <main class="main" id="afxMain" tabindex="-1">
-    <div data-crumb="Financial Operations / Financial Overview" hidden></div>
+<body class="home-body">
+<a class="afx-skip" href="#home-main">Skip to content</a>
 
-    <div class="afx-page">
-     <div class="afx-page-inner">
+<!-- ======================= Header ======================= -->
+<header class="home-header">
+  <a href="index.html" class="brand-link home-brand" aria-label="AFINTRIX home">
+    <img src="assets/afintrix-logo.png" alt="AFINTRIX" class="brand-full-logo">
+  </a>
 
-      <!-- Command bar -->
-      <div class="afx-commandbar">
-        <div class="afx-title-group">
-          <div class="afx-eyebrow">Financial Operations</div>
-          <h1>Financial Overview</h1>
-          <div class="afx-context">
-            <span>Afintrix (Demo) Entity</span>
-            <span class="afx-sep"></span>
-            <span>General Ledger &middot; FY 2026&ndash;2027</span>
-            <span class="afx-sep"></span>
-            <span class="afx-reconciled">Accounts Reconciled</span>
-          </div>
-        </div>
+  <nav class="home-nav" aria-label="Primary">
+    <a href="executive.html">Summary</a>
+    <a href="overview.html">Financials</a>
+    <a href="list.html">Procurement</a>
+    <a href="record.html">People</a>
+    <a href="approval.html">Approvals</a>
+    <a href="report.html">Trial Balance</a>
+    <a href="portal.html">Portal</a>
+  </nav>
 
-        <div class="afx-actions">
-          <div class="afx-segment" data-period role="group" aria-label="Reporting period">
-            <span class="afx-segment-indicator" aria-hidden="true"></span>
-            <button type="button" data-scope="fy" aria-selected="true">FY 2026-2027</button>
-            <button type="button" data-scope="q1" aria-selected="false">Q1 Target</button>
-            <button type="button" data-scope="month" aria-selected="false">Month</button>
-          </div>
-
-          <button class="btn btn-secondary btn-sm" data-toast="Ledger Synchronized|Real-time ledger entries re-polled from the database engine.|info">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
-            <span>Sync</span>
-          </button>
-
-          <button class="btn btn-primary btn-sm" data-open="mNew">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-            <span>Post Entry</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- View tabs -->
-      <div class="afx-tabs" data-tabs role="tablist" aria-label="Financial views">
-        <span class="afx-tab-indicator" aria-hidden="true"></span>
-        <button type="button" role="tab" id="tab-ov" data-view="ov" aria-controls="panel-ov" aria-selected="true">Operating Position</button>
-        <button type="button" role="tab" id="tab-cash" data-view="cash" aria-controls="panel-cash" aria-selected="false" tabindex="-1">Cash &amp; Bank Liquidity</button>
-        <button type="button" role="tab" id="tab-rec" data-view="rec" aria-controls="panel-rec" aria-selected="false" tabindex="-1">Receivables Ageing</button>
-      </div>
-
-      <!-- ================= Executive Summary ================= -->
-      <section class="afx-panel" id="panel-ov" role="tabpanel" aria-labelledby="tab-ov" tabindex="0">
-
-        <!-- Operating position -->
-        <div class="afx-position" data-reveal>
-          <div class="afx-position-main" data-position></div>
-          <div class="afx-instruments" data-instruments></div>
-        </div>
-
-        <!-- Trajectory + receivables -->
-        <div class="afx-grid is-primary">
-          <article class="afx-card" data-reveal>
-            <header class="afx-card-head">
-              <div>
-                <h2>Operating Trajectory &amp; Margin Curve</h2>
-                <p class="afx-card-sub">Jul 2026 &ndash; Jun 2027 &middot; postings recorded through August 2026</p>
-              </div>
-              <div class="afx-legend" data-legend="trajectory" role="group" aria-label="Toggle chart series">
-                <button type="button" data-series="revenue" aria-pressed="true" style="--swatch:var(--chart-1)">
-                  <span class="afx-swatch"></span>Revenue
-                </button>
-                <button type="button" data-series="expense" aria-pressed="true" style="--swatch:var(--chart-2)">
-                  <span class="afx-swatch"></span>Expense
-                </button>
-                <button type="button" data-series="net" aria-pressed="true" style="--swatch:var(--chart-3)">
-                  <span class="afx-swatch"></span>Net
-                </button>
-              </div>
-            </header>
-            <div class="afx-card-body">
-              <div data-chart="trajectory"></div>
-            </div>
-          </article>
-
-          <article class="afx-card" data-reveal>
-            <header class="afx-card-head">
-              <div>
-                <h2>Receivables Ageing</h2>
-                <p class="afx-card-sub">Total outstanding <b>$316,100.00</b></p>
-              </div>
-              <a href="report.html" class="btn btn-ghost btn-sm" style="color:var(--brand);font-weight:700">Audit &rarr;</a>
-            </header>
-            <div class="afx-card-body">
-              <div data-chart="ageing"></div>
-              <div class="afx-ageing-list" data-ageing-list></div>
-            </div>
-          </article>
-        </div>
-
-        <!-- Triage + ledger -->
-        <div class="afx-grid is-split">
-          <article class="afx-card" data-reveal>
-            <header class="afx-card-head">
-              <div>
-                <h2>Operational Action Triage</h2>
-                <p class="afx-card-sub">Items awaiting a decision this period</p>
-              </div>
-              <span class="status-badge yellow">4 Pending Items</span>
-            </header>
-            <div class="afx-card-body is-flush">
-              <div class="afx-triage" data-triage></div>
-            </div>
-          </article>
-
-          <article class="afx-card" data-reveal>
-            <header class="afx-card-head">
-              <div>
-                <h2>Recent Ledger Postings</h2>
-                <p class="afx-card-sub">Last 5 journal entries posted to Afintrix (Demo)</p>
-              </div>
-              <a href="report.html" class="btn btn-ghost btn-sm" style="color:var(--brand);font-weight:700">All Entries &rarr;</a>
-            </header>
-            <div class="afx-card-body is-flush">
-              <div class="table-scroller">
-                <table class="saas-table dense">
-                  <thead>
-                    <tr>
-                      <th class="sortable">Voucher #</th>
-                      <th class="sortable">Target Account</th>
-                      <th class="sortable">Date</th>
-                      <th class="align-right sortable">Amount ($)</th>
-                    </tr>
-                  </thead>
-                  <tbody data-postings></tbody>
-                </table>
-              </div>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <!-- ================= Cash & Bank Liquidity ================= -->
-      <section class="afx-panel" id="panel-cash" role="tabpanel" aria-labelledby="tab-cash" tabindex="0" hidden>
-        <article class="afx-card" data-reveal>
-          <header class="afx-card-head">
-            <div>
-              <h2>Institutional Cash &amp; Bank Liquidity</h2>
-              <p class="afx-card-sub">12-month trajectory &middot; Principal Operating Account (Dhaka AD)</p>
-            </div>
-            <span class="status-badge red">Overdraft Facility Active</span>
-          </header>
-          <div class="afx-card-body">
-            <div data-chart="liquidity"></div>
-            <div class="afx-chart-foot">
-              <span style="display:inline-flex;align-items:center;gap:7px">
-                <span style="width:9px;height:9px;background:var(--chart-1);border-radius:3px"></span>
-                <span>Principal Operating Account (Dhaka AD)</span>
-              </span>
-              <span style="color:var(--neg);font-weight:700">
-                Closing Overdraft Position:
-                <span class="num">($117,854.00)</span>
-              </span>
-            </div>
-          </div>
-          <div class="afx-instruments afx-instruments-foot" data-liquidity-stats></div>
-        </article>
-      </section>
-
-      <!-- ================= Receivables Ageing ================= -->
-      <section class="afx-panel" id="panel-rec" role="tabpanel" aria-labelledby="tab-rec" tabindex="0" hidden>
-        <article class="afx-card" data-reveal style="margin-bottom:var(--sp-6)">
-          <header class="afx-card-head">
-            <div>
-              <h2>Accounts Receivable Ageing Matrix</h2>
-              <p class="afx-card-sub">
-                Total outstanding <b>$316,100.00</b> across 4 ageing bands &middot;
-                <span style="color:var(--gold-ink);font-weight:700">$38,500.00 requires critical follow-up</span>
-              </p>
-            </div>
-            <a href="report.html" class="btn btn-primary btn-sm">Open Trial Balance &rarr;</a>
-          </header>
-          <div class="afx-card-body">
-            <div class="afx-distribution" data-ageing-distribution></div>
-            <div class="afx-ageing-matrix" data-ageing-matrix></div>
-          </div>
-        </article>
-      </section>
-
-     </div>
-    </div>
-  </main>
-</div>
-
-<!-- Modal: Post New Entry -->
-<div class="saas-modal" id="mNew" role="dialog" aria-modal="true" aria-labelledby="mNewTitle">
-  <div class="modal-header-deck">
-    <h3 id="mNewTitle">Post New Ledger Transaction</h3>
-    <button class="btn btn-icon btn-sm" data-close aria-label="Close dialog">&times;</button>
+  <div class="home-header-actions">
+    <button class="action-icon-btn theme-toggle-trigger" id="landingThemeTrigger"
+            title="Toggle Light / Dark Mode" aria-label="Toggle light or dark mode"></button>
+    <a href="executive.html" class="btn btn-primary btn-sm">Launch workspace</a>
   </div>
-  <div class="modal-body-deck">
-    <div class="banner-callout info" style="margin-bottom:16px">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+</header>
+
+<main id="home-main" tabindex="-1">
+
+  <!-- ======================= Hero ======================= -->
+  <section class="home-hero">
+    <div class="home-hero-aurora" aria-hidden="true"></div>
+    <div class="home-hero-lines" aria-hidden="true"></div>
+
+    <div class="home-hero-inner">
+      <span class="home-badge">
+        <span class="home-badge-dot" aria-hidden="true"></span>
+        Enterprise Resource Planning &middot; FY 2026&ndash;2027
+      </span>
+
+      <h1 class="home-title">
+        One intelligent workspace for
+        <span class="home-title-accent">business operations<span class="home-title-underline" aria-hidden="true"></span></span>
+      </h1>
+
+      <p class="home-sub">
+        Finance, procurement, workforce operations and statutory reporting,
+        connected in a single ledger-backed workspace.
+      </p>
+
+      <div class="home-cta-row">
+        <a href="executive.html" class="btn btn-primary home-cta">
+          Open Executive Summary
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 12h14M13 6l6 6-6 6"/>
+          </svg>
+        </a>
+        <a href="overview.html" class="btn btn-secondary home-cta">View Financial Overview</a>
+      </div>
+
+      <!-- Live figures, read from the same module the dashboards use -->
+      <div class="home-stats" data-home-stats data-reveal></div>
+    </div>
+  </section>
+
+  <!-- ======================= Live preview ======================= -->
+  <section class="home-section" data-reveal>
+    <div class="home-section-head">
+      <span class="afx-eyebrow">Live workspace</span>
+      <h2>The same figures your team works from</h2>
+      <p>These are live charts rendered from the ledger, not screenshots. Switch between views.</p>
+    </div>
+
+    <div class="home-preview" data-hero-art>
+      <div class="home-preview-chrome">
+        <span class="home-dot is-red" aria-hidden="true"></span>
+        <span class="home-dot is-amber" aria-hidden="true"></span>
+        <span class="home-dot is-green" aria-hidden="true"></span>
+        <span class="home-preview-url">afintrix.internal / workspace</span>
+        <span class="home-preview-node">Dhaka AD &middot; Reconciled</span>
+      </div>
+
+      <div class="home-preview-tabs" data-preview-tabs role="tablist" aria-label="Preview view">
+        <button type="button" data-view="position" role="tab" aria-selected="true">Operating Position</button>
+        <button type="button" data-view="receivables" role="tab" aria-selected="false">Receivables</button>
+        <button type="button" data-view="liquidity" role="tab" aria-selected="false">Liquidity</button>
+      </div>
+
+      <div class="home-preview-body is-entering">
+        <div class="home-preview-side">
+          <h3 data-preview-title>Operating Position</h3>
+          <p data-preview-caption>Revenue, expenditure and net result across the fiscal year.</p>
+          <div class="home-preview-figure">
+            <b data-preview-figure>&mdash;</b>
+            <small data-preview-figure-label>&nbsp;</small>
+          </div>
+          <a href="overview.html" class="btn btn-secondary btn-sm">Open the full view</a>
+        </div>
+        <div class="home-preview-chart" data-preview-chart></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= Modules ======================= -->
+  <section class="home-section" data-reveal>
+    <div class="home-section-head">
+      <span class="afx-eyebrow">Modules</span>
+      <h2>Every operational area, one ledger</h2>
+      <p>Each module writes to the same chart of accounts, so the numbers agree wherever you look.</p>
+    </div>
+    <div class="home-modules" data-home-modules></div>
+  </section>
+
+  <!-- ======================= Closing ======================= -->
+  <section class="home-section home-closing" data-reveal>
+    <div class="home-closing-card">
       <div>
-        <div style="font-weight:700">Posting to Active Fiscal Year 2026&ndash;2027</div>
-        <div style="font-size:12px;color:var(--ink-secondary)">Transaction will post against Afintrix (Demo) in US Dollars ($ / USD).</div>
+        <h2>Start from the summary</h2>
+        <p>Enterprise position across every module, rolled up to a single screen.</p>
       </div>
+      <a href="executive.html" class="btn btn-primary home-cta">
+        Open Executive Summary
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 12h14M13 6l6 6-6 6"/>
+        </svg>
+      </a>
     </div>
+  </section>
+</main>
 
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
-      <div class="form-group">
-        <label class="form-label-deck" for="fVoucher">Voucher Classification <span class="req">*</span></label>
-        <select class="form-input" id="fVoucher">
-          <option>Journal Entry</option>
-          <option>Payment Entry</option>
-          <option>Sales Invoice</option>
-          <option>Purchase Invoice</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label-deck" for="fDate">Posting Date <span class="req">*</span></label>
-        <input type="date" class="form-input" id="fDate" value="2026-09-01">
-      </div>
-
-      <div class="form-group">
-        <label class="form-label-deck" for="fCompany">Operating Company <span class="req">*</span></label>
-        <select class="form-input" id="fCompany">
-          <option>Afintrix (Demo)</option>
-          <option>Afintrix Global Ltd</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label-deck" for="fCost">Cost Center</label>
-        <select class="form-input" id="fCost">
-          <option>Main - AD</option>
-          <option>Dhaka Branch - AD</option>
-          <option>Chattogram - AD</option>
-        </select>
-      </div>
+<footer class="home-footer">
+  <div class="home-footer-inner">
+    <div class="home-footer-brand">
+      <img src="assets/afintrix-symbol.png" alt="" style="display:block;height:26px;width:auto">
+      <span><b>AFINTRIX ERP</b> &middot; Commercial Enterprise Platform</span>
     </div>
+    <nav class="home-footer-links" aria-label="Footer">
+      <a href="executive.html">Summary</a>
+      <a href="overview.html">Financials</a>
+      <a href="list.html">Purchase Orders</a>
+      <a href="record.html">Personnel</a>
+      <a href="approval.html">Governance</a>
+      <a href="report.html">Trial Balance</a>
+    </nav>
+    <span class="home-footer-meta">&copy; <span data-year>2026</span> Afintrix &middot; Dhaka AD</span>
   </div>
-  <div class="modal-footer-deck">
-    <button class="btn btn-secondary btn-sm" data-close>Cancel</button>
-    <button class="btn btn-primary btn-sm" data-toast="Voucher Committed|JV-2026-00049 saved as working draft.|success" data-close-after>Post Transaction</button>
-  </div>
-</div>
+</footer>
 
 <script type="module" src="js/app.js"></script>
-<script type="module" src="js/overview.js"></script>
+<script type="module" src="js/home.js"></script>
 </body>
 </html>

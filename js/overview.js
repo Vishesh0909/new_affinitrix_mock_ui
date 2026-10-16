@@ -24,20 +24,22 @@ import {
 } from './data.js';
 
 import { ageingDonut, liquidityChart, trajectoryChart } from './charts.js';
+import { cellBars, microBar } from './visuals.js';
 import { countUpOnView, moveIndicator, prefersReducedMotion, revealOnScroll } from './motion.js';
+import { initPageHeader } from './header.js';
 
 const TRIAGE_ICONS = {
-  alert: '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>',
-  bank: '<path d="M4 10h3v7H4zM10.5 10h3v7h-3zM2 19h20v3H2zM17 10h3v7h-3zM12 1L2 6v2h20V6z"/>',
-  doc: '<path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 2 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>',
-  report: '<path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>',
+  alert: '<circle cx="12" cy="12" r="9"/><path d="M12 7.8v5"/><path d="M12 16.2h.01"/>',
+  bank: '<path d="m3 9.5 9-5.5 9 5.5"/><path d="M4.5 9.5V18M9.5 9.5V18M14.5 9.5V18M19.5 9.5V18"/><path d="M2.5 20.5h19"/>',
+  doc: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5"/>',
+  report: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5"/><path d="M9 13.5h6M9 17h4"/>',
 };
 
 const icon = (name, size = 18) =>
-  `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">${TRIAGE_ICONS[name] || ''}</svg>`;
+  `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${TRIAGE_ICONS[name] || ''}</svg>`;
 
 const ARROW =
-  '<svg class="afx-arrow" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>';
+  '<svg class="afx-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg>';
 
 const $ = (sel, root = document) => root.querySelector(sel);
 
@@ -162,15 +164,35 @@ function renderPosition(root, snapshot) {
 }
 
 function renderInstruments(root) {
+  // Bars compare the four flows against the largest of them. The basis is
+  // named in the tooltip so the bar can't be read as a progress figure.
+  const peak = Math.max(...FLOW.map((f) => f.value));
+
   root.innerHTML = FLOW.map(
-    (f) => `
+    (f, i) => `
     <a class="afx-instrument ${f.tone === 'critical' ? 'is-critical' : ''} ${f.tone === 'positive' ? 'is-positive' : ''}"
        href="${f.href}" title="${f.hint}" data-reveal-item>
       <div class="afx-inst-label">${f.label}</div>
-      <div class="afx-inst-value">${f.display}</div>
+      <div class="afx-inst-value"><span data-flow-count="${i}">${f.display}</span></div>
       <div class="afx-inst-meta">${f.meta}${ARROW}</div>
+      <div class="afx-figure-visual">
+        ${microBar({
+          value: f.value,
+          max: peak,
+          tone: f.tone === 'critical' ? 'gold' : f.tone === 'positive' ? 'pos' : 'brand',
+          basis: 'the largest flow shown',
+          delay: 120 + i * 90,
+        })}
+      </div>
     </a>`
   ).join('');
+
+  // Count each figure up in its own compact notation, matching how it reads
+  // at rest ($3.63L, $47.00K).
+  FLOW.forEach((f, i) => {
+    const node = root.querySelector(`[data-flow-count="${i}"]`);
+    if (node) countUpOnView(node, f.value, (v) => compact(v), { duration: 1, delay: i * 0.08 });
+  });
 }
 
 /* ----------------------------------------------------------------------- */
@@ -392,6 +414,21 @@ function renderTriage() {
       <span class="afx-triage-trail">${t.trailing}${ARROW}</span>
     </a>`
   ).join('');
+
+  // The overdue row carries a real ratio — its share of total receivables.
+  const overdue = host.querySelector('.afx-triage-item.is-critical .afx-triage-text');
+  if (overdue) {
+    overdue.insertAdjacentHTML(
+      'beforeend',
+      `<span class="afx-figure-visual">${microBar({
+        value: AGEING.buckets[3].value,
+        max: AGEING.total,
+        tone: 'gold',
+        basis: 'total receivables outstanding',
+        delay: 240,
+      })}</span>`
+    );
+  }
 }
 
 function renderPostings() {
@@ -407,6 +444,10 @@ function renderPostings() {
       <td class="numeric">${plain(p.amount)}</td>
     </tr>`
   ).join('');
+
+  // Relative magnitude behind the amount column, so the biggest postings are
+  // visible without reading every digit.
+  cellBars(body, 3, 'brand');
 }
 
 /* ----------------------------------------------------------------------- */
@@ -547,6 +588,23 @@ function boot() {
   });
 
   revealOnScroll('[data-reveal]');
+  initPageHeader();
+
+  /**
+   * Sync re-reads the data module and re-renders in place. Existing chart
+   * instances are reused via their own update paths rather than rebuilt, so
+   * repeated syncs cannot pile up resize/theme observers.
+   */
+  document.addEventListener('afx:refresh', (e) => {
+    if (instrumentHost) renderInstruments(instrumentHost);
+    renderTriage();
+    renderPostings();
+    renderAgeingMatrix();
+    renderAgeingDistribution();
+    renderLiquidityStats();
+    paint(scopeId);
+    if (e.detail) e.detail.done = Promise.resolve();
+  });
 }
 
 if (document.readyState === 'loading') {

@@ -4,7 +4,7 @@
  * Single source of truth for the Financial Overview figures.
  *
  * PROVENANCE: this application has no backend. Every figure below was lifted
- * verbatim from the values previously hardcoded into index.html's markup.
+ * verbatim from the values previously hardcoded into overview.html's markup.
  * Nothing here is invented. Where a value is *derived*, the derivation is
  * documented inline so it can be swapped for a real API response later.
  *
@@ -389,7 +389,7 @@ export const MODULE_SUMMARY = [
     value: () => money(POSITION.netSurplus),
     status: ORG.status,
     tone: 'pos',
-    href: 'index.html',
+    href: 'overview.html',
   },
   {
     module: 'Trial Balance & Ledger',
@@ -405,7 +405,7 @@ export const MODULE_SUMMARY = [
     value: () => money(LIQUIDITY.closing),
     status: LIQUIDITY.facility,
     tone: 'neg',
-    href: 'index.html#cash',
+    href: 'overview.html#cash',
   },
   {
     module: 'Receivables',
@@ -413,7 +413,7 @@ export const MODULE_SUMMARY = [
     value: () => money(AGEING.total),
     status: `${share(AGEING.buckets[3].share)} critical follow-up`,
     tone: 'gold',
-    href: 'index.html#rec',
+    href: 'overview.html#rec',
   },
   {
     module: 'Purchase Orders',

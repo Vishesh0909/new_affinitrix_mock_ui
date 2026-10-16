@@ -70,7 +70,10 @@ export function revealOnScroll(selector = '[data-reveal]', options = {}) {
             });
           }).catch(() => {});
         }
+        // Hand the element back to the stylesheet; a lingering inline
+        // transform would override any CSS hover state.
         target.style.opacity = '';
+        target.style.transform = '';
         target.classList.add('is-revealed');
         // Reveal once; re-animating on every scroll pass is noise.
         return () => {};
@@ -194,22 +197,6 @@ export function moveIndicator(indicator, target) {
     { transform: `translateX(${x}px)`, width: `${w}px` },
     { duration: DURATION.normal, easing: EASE.out }
   );
-}
-
-/** Open an overlay surface (modal, drawer, command palette). */
-export function enterOverlay(node, kind = 'modal') {
-  if (prefersReducedMotion()) return;
-  const keyframes =
-    kind === 'drawer'
-      ? { transform: ['translateX(24px)', 'translateX(0px)'], opacity: [0, 1] }
-      : { transform: ['translateY(10px) scale(.985)', 'translateY(0px) scale(1)'], opacity: [0, 1] };
-  animate(node, keyframes, { duration: DURATION.normal, easing: EASE.out });
-}
-
-/** Press feedback for buttons and tiles — brief, never bouncy. */
-export function pressFeedback(node) {
-  if (prefersReducedMotion()) return;
-  animate(node, { transform: ['scale(1)', 'scale(0.97)', 'scale(1)'] }, { duration: 0.2, easing: EASE.out });
 }
 
 /** Entrance for a toast stack item. */

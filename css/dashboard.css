@@ -30,6 +30,10 @@
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: thin;
+  /* The sticky header changes height as it condenses. Scroll anchoring would
+     "helpfully" adjust scrollTop to compensate, which pushes the position back
+     across the condense threshold and makes the header oscillate. */
+  overflow-anchor: none;
 }
 
 .afx-page::-webkit-scrollbar {
@@ -1567,5 +1571,413 @@
   .afx-assure-figures {
     gap: var(--sp-4);
     width: 100%;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   11. Page command header — sticky, condensing, with live state
+   -------------------------------------------------------------------------- */
+
+.afx-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--canvas);
+  /* Bleed over the page gutters so content cannot show past the edges. */
+  margin: 0 calc(var(--shell-gutter) * -1) var(--sp-5);
+  padding: var(--sp-2) var(--shell-gutter) 0;
+  transition: box-shadow var(--duration-normal) var(--ease-out),
+              background var(--duration-normal) var(--ease-out);
+}
+
+.afx-header.is-condensed {
+  /* Fully opaque: a translucent wash let the content underneath read through
+     as the page scrolled past. */
+  background: var(--canvas);
+  box-shadow: 0 1px 0 var(--border), 0 8px 20px -14px rgba(17, 21, 40, 0.3);
+}
+
+/* Title block shrinks away as the page scrolls, so the tabs and actions
+   stay reachable without a tall header eating the viewport. */
+.afx-header .afx-eyebrow,
+.afx-header .afx-context {
+  transition: opacity var(--duration-normal) var(--ease-out),
+              max-height var(--duration-normal) var(--ease-out),
+              margin var(--duration-normal) var(--ease-out);
+  overflow: hidden;
+  max-height: 90px;
+}
+
+.afx-header.is-condensed .afx-eyebrow,
+.afx-header.is-condensed .afx-context {
+  opacity: 0;
+  max-height: 0;
+  margin-bottom: 0;
+  pointer-events: none;
+}
+
+.afx-header .afx-title-group h1 {
+  transition: font-size var(--duration-normal) var(--ease-out),
+              margin var(--duration-normal) var(--ease-out);
+}
+
+.afx-header.is-condensed .afx-title-group h1 {
+  font-size: 18px;
+  margin-bottom: 0;
+}
+
+.afx-header.is-condensed .afx-commandbar {
+  margin-bottom: var(--sp-2);
+  align-items: center;
+}
+
+/* Reading-progress hairline along the header's TOP edge. The lower edge is
+   already occupied by the tab rail's sliding indicator. */
+.afx-progress {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 2px;
+  width: 100%;
+  background: transparent;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.afx-progress span {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--brand), var(--gold));
+  transform-origin: left center;
+  transition: width 90ms linear;
+}
+
+/* --- Live status + last-updated ------------------------------------------ */
+
+.afx-reconciled::before {
+  animation: afx-pulse 2.6s var(--ease-out) infinite;
+}
+
+@keyframes afx-pulse {
+  0%, 100% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--pos) 18%, transparent); }
+  50%      { box-shadow: 0 0 0 6px color-mix(in srgb, var(--pos) 4%, transparent); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .afx-reconciled::before { animation: none; }
+}
+
+.afx-updated {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Sync button: idle / working / done ---------------------------------- */
+
+.afx-sync[data-state="working"] {
+  pointer-events: none;
+}
+
+.afx-sync[data-state="working"] svg {
+  animation: afx-spin 0.75s linear infinite;
+}
+
+@keyframes afx-spin {
+  to { transform: rotate(360deg); }
+}
+
+.afx-sync[data-state="done"] {
+  color: var(--pos);
+  border-color: var(--pos-border);
+  background: var(--pos-surface);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .afx-sync[data-state="working"] svg { animation: none; }
+}
+
+/* --- Segment + tabs: richer affordances ---------------------------------- */
+
+.afx-segment button {
+  position: relative;
+  z-index: 1;
+}
+
+.afx-segment button[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 3px;
+  width: 14px;
+  height: 2px;
+  border-radius: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, var(--brand), var(--gold));
+}
+
+.afx-tabs {
+  margin-bottom: 0;
+}
+
+/* Hover shows where the indicator would land. */
+.afx-tabs button::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--border-strong);
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.afx-tabs button {
+  position: relative;
+}
+
+.afx-tabs button:hover:not([aria-selected="true"])::after {
+  opacity: 1;
+}
+
+@media (max-width: 720px) {
+  .afx-header {
+    margin-left: calc(var(--sp-4) * -1);
+    margin-right: calc(var(--sp-4) * -1);
+    padding-left: var(--sp-4);
+    padding-right: var(--sp-4);
+  }
+
+  .afx-header.is-condensed .afx-title-group h1 {
+    font-size: 16px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   12. Header chrome — new button language, icon tile, meta chips, pill tabs
+   -------------------------------------------------------------------------- */
+
+/* Buttons now live in the shared system in sapphire.css so every screen gets
+   the same treatment. Only header-specific sizing remains here. */
+
+.afx-header .btn {
+  height: 36px;
+  padding: 0 16px;
+}
+
+/* --- Page icon tile ------------------------------------------------------- */
+
+.afx-title-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 9px;
+}
+
+.afx-page-icon {
+  position: relative;
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: linear-gradient(140deg, #3B57F5 0%, var(--brand) 48%, #16249B 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 8px 20px -8px var(--brand);
+  transition: transform var(--duration-normal) var(--ease-bounce),
+              box-shadow var(--duration-normal) var(--ease-out),
+              width var(--duration-normal) var(--ease-out),
+              height var(--duration-normal) var(--ease-out);
+}
+
+/* A thin gold hairline at the base, echoing the logo's swoosh. */
+.afx-page-icon::after {
+  content: "";
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--gold) 70%, transparent);
+  pointer-events: none;
+  transition: width var(--duration-normal), height var(--duration-normal);
+}
+
+.afx-title-group:hover .afx-page-icon {
+  transform: rotate(-6deg) scale(1.06);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.36),
+    0 14px 28px -10px var(--brand);
+}
+
+.afx-header.is-condensed .afx-page-icon,
+.afx-header.is-condensed .afx-page-icon::after {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+}
+
+.afx-header.is-condensed .afx-title-row {
+  margin-bottom: 0;
+  gap: 11px;
+}
+
+/* --- Metadata chips ------------------------------------------------------- */
+
+.afx-context.is-chips {
+  gap: 7px;
+}
+
+.afx-meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 11px;
+  border-radius: var(--rad-pill);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ink-secondary);
+  white-space: nowrap;
+  transition: border-color var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out),
+              transform var(--duration-fast) var(--ease-out);
+}
+
+.afx-meta-chip:hover {
+  border-color: var(--border-strong);
+  color: var(--ink);
+  transform: translateY(-1px);
+}
+
+.afx-meta-chip.is-live {
+  color: var(--pos);
+  background: var(--pos-surface);
+  border-color: var(--pos-border);
+  font-weight: 700;
+}
+
+.afx-meta-chip.is-quiet {
+  background: transparent;
+  border-style: dashed;
+  border-color: var(--border);
+  color: var(--ink-muted);
+}
+
+/* --- Period segment: filled indicator ------------------------------------- */
+
+.afx-segment {
+  padding: 4px;
+  border-radius: var(--rad-pill);
+  background: var(--surface-alt);
+}
+
+.afx-segment-indicator {
+  top: 4px;
+  bottom: 4px;
+  border-radius: var(--rad-pill);
+  border: 0;
+  background: linear-gradient(135deg, var(--brand), #2E49E8);
+  box-shadow: 0 5px 14px -6px var(--brand), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+.afx-segment button {
+  padding: 7px 15px;
+  border-radius: var(--rad-pill);
+}
+
+.afx-segment button[aria-selected="true"] {
+  color: var(--on-brand);
+  font-weight: 700;
+}
+
+/* Superseded by the filled indicator. */
+.afx-segment button[aria-selected="true"]::after {
+  display: none;
+}
+
+/* --- Pill tabs ------------------------------------------------------------ */
+
+.afx-tabs.is-pills {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--rad-pill);
+  background: var(--surface-alt);
+  margin-bottom: var(--sp-2);
+}
+
+.afx-tabs.is-pills button {
+  padding: 7px 17px;
+  border-radius: var(--rad-pill);
+  z-index: 1;
+}
+
+.afx-tabs.is-pills button[aria-selected="true"] {
+  color: var(--ink);
+  font-weight: 750;
+}
+
+.afx-tabs.is-pills button::after {
+  display: none;
+}
+
+.afx-tabs.is-pills .afx-tab-indicator {
+  top: 4px;
+  bottom: 4px;
+  height: auto;
+  border-radius: var(--rad-pill);
+  background: var(--surface);
+  box-shadow: 0 2px 8px -2px rgba(17, 21, 40, 0.18), inset 0 0 0 1px var(--border-subtle);
+  z-index: 0;
+}
+
+/* The gold tick under the live tab. */
+.afx-tabs.is-pills button[aria-selected="true"]::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 5px;
+  width: 16px;
+  height: 2px;
+  border-radius: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, var(--brand), var(--gold));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .afx-header .btn::after,
+  .afx-page-icon,
+  .afx-meta-chip {
+    transition: none !important;
+  }
+  .afx-header .btn:hover::after { transform: none; }
+  .afx-title-group:hover .afx-page-icon { transform: none; }
+}
+
+@media (max-width: 720px) {
+  .afx-page-icon,
+  .afx-page-icon::after {
+    width: 36px;
+    height: 36px;
+    border-radius: 11px;
+  }
+
+  .afx-tabs.is-pills {
+    width: 100%;
+    justify-content: flex-start;
   }
 }

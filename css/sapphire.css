@@ -1851,3 +1851,1027 @@ table.saas-table tfoot td {
     display: none;
   }
 }
+
+/* ==========================================================================
+   NAVIGATION RAIL (V4)
+   The sidebar is a deep navy surface in BOTH app themes: it separates
+   navigation from the working canvas and lets the brand blue and gold read
+   properly. Everything inside it therefore uses its own `--nav-*` palette
+   rather than the content tokens.
+   ========================================================================== */
+
+:root {
+  --nav-bg: linear-gradient(180deg, #151D40 0%, #0B1024 100%);
+  --nav-border: rgba(255, 255, 255, 0.08);
+  --nav-ink: #BCC6DE;
+  --nav-ink-strong: #FFFFFF;
+  --nav-ink-muted: #78849F;
+  --nav-hover: rgba(255, 255, 255, 0.07);
+  --nav-active-bg: rgba(86, 116, 255, 0.20);
+  --nav-surface: rgba(255, 255, 255, 0.06);
+  --nav-surface-line: rgba(255, 255, 255, 0.11);
+  --nav-accent: #D9AF5A;
+  --nav-ring: 0 0 0 2px rgba(255, 255, 255, 0.45);
+}
+
+[data-theme="dark"] {
+  --nav-bg: linear-gradient(180deg, #0C1124 0%, #06090F 100%);
+  --nav-border: rgba(255, 255, 255, 0.06);
+  --nav-hover: rgba(255, 255, 255, 0.05);
+  --nav-active-bg: rgba(86, 116, 255, 0.17);
+  --nav-surface: rgba(255, 255, 255, 0.05);
+  --nav-surface-line: rgba(255, 255, 255, 0.09);
+}
+
+.app-sidebar {
+  background: var(--nav-bg);
+  border-right: 1px solid var(--nav-border);
+  color: var(--nav-ink);
+}
+
+/* --- Brand deck ---------------------------------------------------------- */
+
+.sidebar-brand-deck {
+  padding: 0 18px;
+  justify-content: flex-start;
+  border-bottom: 1px solid var(--nav-border);
+}
+
+.app.nav-collapsed .sidebar-brand-deck {
+  /* 72px of rail cannot hold the lockup and a button side by side. */
+  padding: 0;
+  justify-content: center;
+}
+
+.brand-link:focus-visible,
+.nav-item-link:focus-visible,
+.org-pill:focus-visible {
+  outline: none;
+  box-shadow: var(--nav-ring);
+}
+
+/* --- Edge toggle: pinned to the sidebar border, reachable in both states -- */
+
+.sidebar-toggle-btn {
+  position: absolute;
+  top: 22px;
+  right: -12px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  margin: 0;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  color: var(--ink-secondary);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  z-index: 60;
+  transition: color var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out),
+              transform var(--duration-fast) var(--ease-out);
+}
+
+.sidebar-toggle-btn:hover {
+  color: var(--brand);
+  border-color: var(--brand);
+  transform: scale(1.1);
+  background: var(--surface);
+}
+
+.sidebar-toggle-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--ring-focus);
+}
+
+.sidebar-toggle-btn svg {
+  transition: transform var(--duration-normal) var(--ease-spring);
+}
+
+.app.nav-collapsed .sidebar-toggle-btn svg {
+  transform: rotate(180deg);
+}
+
+/* The mobile drawer is driven by the top bar's menu button instead. */
+@media (max-width: 1080px) {
+  .sidebar-toggle-btn {
+    display: none;
+  }
+}
+
+/* --- Organisation switcher ----------------------------------------------- */
+
+.sidebar-org-switcher {
+  padding: 14px;
+  background: transparent;
+  border-bottom: 1px solid var(--nav-border);
+}
+
+.org-pill {
+  background: var(--nav-surface);
+  border: 1px solid var(--nav-surface-line);
+  box-shadow: none;
+  padding: 9px 10px;
+  transition: background var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out);
+}
+
+.org-pill:hover {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.20);
+}
+
+.org-avatar-badge {
+  background: linear-gradient(135deg, #4865FF 0%, #2439C9 100%);
+  color: #FFFFFF;
+  box-shadow: 0 2px 10px rgba(40, 70, 230, 0.45);
+}
+
+.org-name {
+  color: var(--nav-ink-strong);
+}
+
+.org-meta {
+  color: var(--nav-ink-muted);
+}
+
+/* --- Nav list ------------------------------------------------------------ */
+
+.sidebar-nav-scroll {
+  padding: 16px 12px;
+}
+
+.sidebar-nav-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.nav-section-header {
+  color: var(--nav-ink-muted);
+  padding: 14px 12px 7px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+}
+
+.nav-item-link {
+  height: 40px;
+  gap: 12px;
+  color: var(--nav-ink);
+  font-weight: 550;
+  border-radius: var(--rad-md);
+}
+
+.nav-item-link:hover {
+  background: var(--nav-hover);
+  color: var(--nav-ink-strong);
+  transform: none;
+}
+
+.nav-item-link.active {
+  background: transparent;
+  color: var(--nav-ink-strong);
+  font-weight: 650;
+}
+
+.nav-active-rail {
+  left: 12px;
+  right: 12px;
+  background: var(--nav-active-bg);
+  box-shadow: inset 3px 0 0 var(--nav-accent);
+}
+
+.nav-icon {
+  opacity: 0.75;
+  transition: opacity var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out);
+}
+
+.nav-item-link:hover .nav-icon {
+  opacity: 1;
+  transform: none;
+}
+
+/* Gold mark on the active row — the one place the logo's accent appears. */
+.nav-item-link.active .nav-icon {
+  opacity: 1;
+  color: var(--nav-accent);
+}
+
+.nav-count-pill {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: var(--nav-surface-line);
+  color: var(--nav-ink);
+}
+
+.nav-item-link.active .nav-count-pill {
+  background: var(--nav-accent);
+  border-color: var(--nav-accent);
+  color: #2B1F08;
+}
+
+/* --- User footer --------------------------------------------------------- */
+
+.sidebar-footer-card {
+  background: transparent;
+  border-top: 1px solid var(--nav-border);
+  padding: 12px 14px;
+}
+
+.user-name {
+  color: var(--nav-ink-strong);
+}
+
+.user-role-label {
+  color: var(--nav-ink-muted);
+}
+
+.user-thumb {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.user-thumb-fallback {
+  background: var(--nav-surface);
+  color: var(--nav-ink);
+}
+
+/* --- Collapsed rail ------------------------------------------------------ */
+
+.app.nav-collapsed .sidebar-nav-scroll {
+  padding: 16px 10px;
+}
+
+.app.nav-collapsed .nav-item-link {
+  justify-content: center;
+  gap: 0;
+  padding: 0;
+}
+
+.app.nav-collapsed .nav-active-rail {
+  left: 10px;
+  right: 10px;
+}
+
+.app.nav-collapsed .sidebar-org-switcher {
+  padding: 14px 10px;
+}
+
+.app.nav-collapsed .org-pill {
+  padding: 9px 0;
+  justify-content: center;
+}
+
+.app.nav-collapsed .sidebar-footer-card {
+  padding: 12px 10px;
+  justify-content: center;
+}
+
+.app.nav-collapsed .user-thumb,
+.app.nav-collapsed .user-thumb-fallback {
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Mobile-only controls
+   `.mobile-only` was referenced by the top bar's menu button but never
+   defined, so the hamburger rendered at every width. It belongs only below
+   1080px, where the sidebar becomes an overlay drawer and the rail's edge
+   toggle is hidden — leaving this the sole way to open navigation.
+   -------------------------------------------------------------------------- */
+
+.mobile-only {
+  display: none;
+}
+
+@media (max-width: 1080px) {
+  .mobile-only {
+    display: inline-flex;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Scrollbars
+   Chrome 121+ ignores every `::-webkit-scrollbar-*` rule on an element that
+   also sets `scrollbar-width`, so the thumb colours below must come from the
+   standard `scrollbar-color` property. The webkit rules are kept only as a
+   fallback for older engines.
+   -------------------------------------------------------------------------- */
+
+.sidebar-nav-scroll {
+  scrollbar-width: thin;
+  /* thumb, then track — a bare tint of the navy rail rather than system white */
+  scrollbar-color: rgba(255, 255, 255, 0.22) transparent;
+}
+
+.sidebar-nav-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-nav-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-nav-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: var(--rad-pill);
+}
+
+.sidebar-nav-scroll::-webkit-scrollbar-button {
+  display: none;
+}
+
+/* Content scrollers sit on the light canvas and take the border tint. */
+.afx-page,
+.page-viewport-canvas,
+.table-scroller {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+.afx-page::-webkit-scrollbar,
+.page-viewport-canvas::-webkit-scrollbar,
+.table-scroller::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.afx-page::-webkit-scrollbar-track,
+.page-viewport-canvas::-webkit-scrollbar-track,
+.table-scroller::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.afx-page::-webkit-scrollbar-thumb,
+.page-viewport-canvas::-webkit-scrollbar-thumb,
+.table-scroller::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: var(--rad-pill);
+}
+
+.afx-page::-webkit-scrollbar-button,
+.page-viewport-canvas::-webkit-scrollbar-button,
+.table-scroller::-webkit-scrollbar-button {
+  display: none;
+}
+
+/* ==========================================================================
+   BUTTON SYSTEM (V5)
+   One treatment used on every screen: pill geometry, a cursor-tracked
+   highlight, a single sheen sweep on hover, and a physical press. Variants
+   differ only in fill — the interaction model is identical everywhere.
+   ========================================================================== */
+
+.btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: var(--rad-pill);
+  font-weight: 650;
+  letter-spacing: -0.005em;
+}
+
+/* Cursor-tracked highlight. --mx/--my are fed by app.js; the 50% fallback
+   keeps it centred for keyboard and touch users. */
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(90px circle at var(--mx, 50%) var(--my, 50%),
+              rgba(255, 255, 255, 0.26), transparent 62%);
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-out);
+}
+
+.btn:not(:disabled):hover::before {
+  opacity: 1;
+}
+
+/* One sheen pass on hover, never a loop. */
+.btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -60%;
+  width: 45%;
+  z-index: -1;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: translateX(0);
+  transition: transform 0s;
+  pointer-events: none;
+}
+
+.btn:not(:disabled):hover::after {
+  transform: translateX(380%);
+  transition: transform 0.65s var(--ease-out);
+}
+
+/* --- Fills ---------------------------------------------------------------- */
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--brand) 0%, #2E49E8 55%, var(--brand-hover) 100%);
+  border-color: transparent;
+  color: var(--on-brand);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.24),
+    0 6px 18px -8px var(--brand),
+    0 1px 2px rgba(17, 21, 40, 0.18);
+}
+
+.btn-primary:not(:disabled):hover {
+  background: linear-gradient(135deg, var(--brand) 0%, #2E49E8 55%, var(--brand-hover) 100%);
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 12px 26px -10px var(--brand),
+    0 2px 4px rgba(17, 21, 40, 0.2);
+}
+
+.btn-secondary {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--ink-secondary);
+  box-shadow: var(--shadow-xs);
+}
+
+.btn-secondary:not(:disabled):hover {
+  background: var(--surface);
+  color: var(--brand);
+  border-color: var(--brand-border);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -10px var(--brand);
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, #E6BE6C 0%, var(--gold) 55%, var(--gold-hover) 100%);
+  border-color: transparent;
+  color: #241A05;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.34),
+    0 6px 18px -8px var(--gold);
+}
+
+.btn-gold:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 12px 26px -10px var(--gold);
+}
+
+.btn-danger {
+  background: var(--surface);
+  border-color: var(--neg-border);
+  color: var(--neg);
+}
+
+.btn-danger:not(:disabled):hover {
+  background: var(--neg-surface);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -10px var(--neg);
+}
+
+.btn-icon {
+  /* Equal width and height, so the pill radius resolves to a circle. */
+  border-radius: var(--rad-pill);
+}
+
+/* Ghost buttons read as inline links — no fill, so no sheen or glow. */
+.btn-ghost::before,
+.btn-ghost::after {
+  display: none;
+}
+
+.btn-ghost:not(:disabled):hover {
+  background: var(--surface-hover);
+  transform: none;
+}
+
+/* --- Press ---------------------------------------------------------------- */
+
+.btn:not(:disabled):active {
+  transform: translateY(0) scale(0.975);
+}
+
+.btn-primary:not(:disabled):active,
+.btn-gold:not(:disabled):active {
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.22);
+}
+
+/* --- Icon motion: each means something ------------------------------------ */
+
+.btn svg {
+  transition: transform var(--duration-normal) var(--ease-bounce);
+}
+
+.btn:not(:disabled):hover svg.is-plus {
+  transform: rotate(90deg);
+}
+
+.btn:not(:disabled):hover svg.is-refresh {
+  transform: rotate(-150deg);
+}
+
+.btn:not(:disabled):hover svg.is-download {
+  transform: translateY(2px);
+}
+
+.afx-sync[data-state="working"] svg {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn::after,
+  .btn svg {
+    transition: none !important;
+  }
+
+  .btn:hover::after {
+    transform: none;
+  }
+
+  .btn:not(:disabled):hover svg {
+    transform: none !important;
+  }
+}
+
+/* ==========================================================================
+   TOP BAR (V5)
+   Shared chrome across every screen: a crumb trail with a module mark, a
+   command-search field as the clear centrepiece, grouped icon controls, and
+   the portal entry set apart by a divider.
+   ========================================================================== */
+
+.top-bar-deck {
+  gap: 16px;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  backdrop-filter: saturate(1.6) blur(12px);
+}
+
+/* --- Breadcrumbs ---------------------------------------------------------- */
+
+.breadcrumbs-deck {
+  gap: 6px;
+  font-size: 12.8px;
+}
+
+.crumb-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin-right: 4px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  color: var(--brand);
+  background: var(--brand-surface);
+  border: 1px solid var(--brand-border);
+  transition: transform var(--duration-normal) var(--ease-bounce),
+              background var(--duration-fast) var(--ease-out);
+}
+
+.breadcrumbs-deck:hover .crumb-mark {
+  transform: rotate(-8deg) scale(1.06);
+}
+
+.breadcrumbs-deck a {
+  position: relative;
+  font-weight: 600;
+  padding: 2px 0;
+}
+
+/* Underline grows from the left rather than snapping on. */
+.breadcrumbs-deck a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1.5px;
+  border-radius: 2px;
+  background: var(--brand);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.breadcrumbs-deck a:hover::after {
+  transform: scaleX(1);
+}
+
+.breadcrumbs-deck .slash {
+  display: inline-flex;
+  align-items: center;
+  color: var(--ink-faint);
+  font-size: 0;
+}
+
+.breadcrumbs-deck .current-crumb {
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+/* --- Command search ------------------------------------------------------- */
+
+.command-search-trigger {
+  width: 300px;
+  height: 38px;
+  gap: 9px;
+  padding: 0 10px 0 12px;
+  border-radius: var(--rad-pill);
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  color: var(--ink-muted);
+  box-shadow: inset 0 1px 2px rgba(17, 21, 40, 0.04);
+  transition: border-color var(--duration-fast) var(--ease-out),
+              box-shadow var(--duration-normal) var(--ease-out),
+              background var(--duration-fast) var(--ease-out),
+              width var(--duration-normal) var(--ease-out);
+}
+
+.command-search-trigger:hover,
+.command-search-trigger:focus-visible {
+  background: var(--surface);
+  border-color: var(--brand-border);
+  box-shadow: 0 0 0 4px var(--brand-glow), 0 6px 18px -10px var(--brand);
+}
+
+.search-glyph {
+  display: inline-flex;
+  color: var(--ink-muted);
+  transition: color var(--duration-fast) var(--ease-out),
+              transform var(--duration-normal) var(--ease-bounce);
+}
+
+.command-search-trigger:hover .search-glyph {
+  color: var(--brand);
+  transform: scale(1.12);
+}
+
+.search-label {
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.command-search-trigger kbd {
+  margin-left: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: var(--rad-sm);
+  padding: 3px 7px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--ink-muted);
+  transition: border-color var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out);
+}
+
+.command-search-trigger:hover kbd {
+  border-color: var(--brand-border);
+  color: var(--brand);
+}
+
+/* --- Icon control cluster ------------------------------------------------- */
+
+.top-bar-cluster {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--rad-pill);
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+}
+
+.top-bar-cluster .action-icon-btn {
+  width: 32px;
+  height: 32px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.top-bar-cluster .action-icon-btn:hover {
+  background: var(--surface);
+  color: var(--brand);
+  box-shadow: var(--shadow-xs);
+  transform: none;
+}
+
+.action-icon-btn {
+  border-radius: var(--rad-pill);
+  position: relative;
+}
+
+/* The toggled icon fades and rotates in, so the theme switch is legible. */
+.theme-toggle-trigger svg {
+  animation: afx-icon-swap var(--duration-slow) var(--ease-out);
+}
+
+@keyframes afx-icon-swap {
+  from { opacity: 0; transform: rotate(-70deg) scale(0.6); }
+  to   { opacity: 1; transform: rotate(0) scale(1); }
+}
+
+.badge-dot {
+  animation: afx-dot-pulse 2.4s var(--ease-out) infinite;
+}
+
+@keyframes afx-dot-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--neg) 55%, transparent); }
+  60%      { box-shadow: 0 0 0 5px transparent; }
+}
+
+.top-bar-divider {
+  width: 1px;
+  height: 22px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+/* --- Portal entry --------------------------------------------------------- */
+
+.top-bar-portal {
+  gap: 7px;
+  padding-left: 12px;
+}
+
+.portal-status {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--rad-pill);
+  background: var(--pos);
+  flex-shrink: 0;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--pos) 18%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle-trigger svg,
+  .badge-dot {
+    animation: none;
+  }
+  .breadcrumbs-deck:hover .crumb-mark,
+  .command-search-trigger:hover .search-glyph {
+    transform: none;
+  }
+}
+
+/* --- Responsive ----------------------------------------------------------- */
+
+@media (max-width: 1240px) {
+  .command-search-trigger {
+    width: 220px;
+  }
+}
+
+@media (max-width: 1080px) {
+  .command-search-trigger {
+    width: 44px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  /* Collapses to its glyph; the label and hint have no room. */
+  .command-search-trigger .search-label {
+    display: none;
+  }
+}
+
+@media (max-width: 680px) {
+  .top-bar-divider,
+  .top-bar-portal span:last-child {
+    display: none;
+  }
+
+  .crumb-mark {
+    display: none;
+  }
+}
+
+/* Keep the command search reachable on phones. An earlier rule removed it
+   below 768px; now that it collapses to a single glyph there is room for it,
+   and it is the only pointer route to the command palette on touch. */
+@media (max-width: 768px) {
+  .command-search-trigger {
+    display: inline-flex;
+    width: 40px;
+  }
+}
+
+/* Press feedback for the icon buttons, in CSS rather than script: an
+   animation that writes an inline transform would outrank the hover rules
+   and pin the button after its first click. */
+.action-icon-btn:not(:disabled):active {
+  transform: scale(0.94);
+}
+
+/* ==========================================================================
+   NUMERIC VISUALS
+   Bars, gauges and sparklines that sit beside a figure. Every animation runs
+   over a transform or a dash offset while the element's own geometry already
+   holds the final value — so if the animation never runs, the graphic is
+   still correct and fully drawn.
+   ========================================================================== */
+
+/* --- Proportional bar ----------------------------------------------------- */
+
+.afx-microbar {
+  display: block;
+  width: 100%;
+  height: 4px;
+  border-radius: var(--rad-pill);
+  background: var(--surface-active);
+  overflow: hidden;
+}
+
+.afx-microbar-fill {
+  display: block;
+  height: 100%;
+  border-radius: var(--rad-pill);
+  transform-origin: left center;
+  animation: afx-grow-x 0.75s var(--ease-out) both;
+}
+
+.afx-microbar-fill.is-brand { background: var(--brand); }
+.afx-microbar-fill.is-pos   { background: var(--pos); }
+.afx-microbar-fill.is-neg   { background: var(--neg); }
+.afx-microbar-fill.is-gold  { background: var(--gold); }
+.afx-microbar-fill.is-muted { background: var(--ink-faint); }
+
+@keyframes afx-grow-x {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* --- Stacked split -------------------------------------------------------- */
+
+.afx-stackbar {
+  display: flex;
+  width: 100%;
+  height: 6px;
+  border-radius: var(--rad-pill);
+  overflow: hidden;
+  background: var(--surface-active);
+}
+
+.afx-stackbar-seg {
+  display: block;
+  height: 100%;
+  transform-origin: left center;
+  animation: afx-grow-x 0.7s var(--ease-out) both;
+  transition: filter var(--duration-fast) var(--ease-out);
+}
+
+.afx-stackbar:hover .afx-stackbar-seg {
+  filter: saturate(1.25);
+}
+
+/* --- Radial gauge --------------------------------------------------------- */
+
+.afx-ring {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.afx-ring-track {
+  stroke: var(--surface-active);
+}
+
+.afx-ring-value {
+  /* Sweeps from empty to the value already set on the element. */
+  animation: afx-ring-in 1.1s var(--ease-out) both;
+}
+
+.afx-ring-value.is-brand { stroke: var(--brand); }
+.afx-ring-value.is-pos   { stroke: var(--pos); }
+.afx-ring-value.is-gold  { stroke: var(--gold); }
+.afx-ring-value.is-neg   { stroke: var(--neg); }
+
+@keyframes afx-ring-in {
+  from { stroke-dashoffset: var(--circ); }
+}
+
+.afx-ring-label {
+  position: absolute;
+  font-family: var(--f-mono);
+  font-feature-settings: "tnum" 1;
+  font-size: 11px;
+  font-weight: 750;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+
+/* --- Sparkline ------------------------------------------------------------ */
+
+.afx-spark {
+  display: inline-block;
+  line-height: 0;
+}
+
+.afx-spark-line {
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  /* dasharray and --len are set inline from the measured path length. */
+  animation: afx-draw 1.1s var(--ease-out) both;
+}
+
+.afx-spark-line.is-brand { stroke: var(--brand); }
+.afx-spark-line.is-neg   { stroke: var(--neg); }
+.afx-spark-line.is-pos   { stroke: var(--pos); }
+
+.afx-spark-dot.is-brand { fill: var(--brand); }
+.afx-spark-dot.is-neg   { fill: var(--neg); }
+.afx-spark-dot.is-pos   { fill: var(--pos); }
+
+.afx-spark-zero {
+  stroke: var(--border-strong);
+  stroke-width: 1;
+  stroke-dasharray: 2 2;
+}
+
+@keyframes afx-draw {
+  from { stroke-dashoffset: var(--len, 260); }
+  to   { stroke-dashoffset: 0; }
+}
+
+/* --- Table cell bars ------------------------------------------------------ */
+
+td.afx-has-cellbar {
+  position: relative;
+}
+
+.afx-cellbar {
+  position: absolute;
+  left: 0;
+  right: auto;
+  bottom: 4px;
+  height: 3px;
+  border-radius: var(--rad-pill);
+  opacity: 0.4;
+  transform-origin: left center;
+  animation: afx-grow-x 0.7s var(--ease-out) both;
+  pointer-events: none;
+}
+
+/* Right-aligned numeric columns read better with the bar anchored right. */
+td.numeric.afx-has-cellbar .afx-cellbar,
+td.align-right.afx-has-cellbar .afx-cellbar {
+  left: auto;
+  right: 0;
+  transform-origin: right center;
+}
+
+.afx-cellbar.is-brand { background: var(--brand); }
+.afx-cellbar.is-pos   { background: var(--pos); }
+.afx-cellbar.is-gold  { background: var(--gold); }
+
+tr:hover .afx-cellbar {
+  opacity: 0.75;
+}
+
+/* --- Percentage cells ----------------------------------------------------- */
+
+.afx-pct {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 56px;
+}
+
+.afx-pct-value {
+  font-family: var(--f-mono);
+  font-feature-settings: "tnum" 1;
+  font-weight: 650;
+  font-size: 12px;
+  line-height: 1;
+}
+
+/* --- Figure + visual pairing ---------------------------------------------- */
+
+.afx-figure-visual {
+  margin-top: 9px;
+}
+
+.afx-figure-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .afx-microbar-fill,
+  .afx-stackbar-seg,
+  .afx-ring-value,
+  .afx-spark-line,
+  .afx-cellbar {
+    animation: none !important;
+  }
+}

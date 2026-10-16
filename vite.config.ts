@@ -14,9 +14,9 @@ export default defineConfig(() => {
     build: {
       rollupOptions: {
         input: {
-          main: path.resolve(__dirname, 'index.html'),
+          home: path.resolve(__dirname, 'index.html'),
+          overview: path.resolve(__dirname, 'overview.html'),
           executive: path.resolve(__dirname, 'executive.html'),
-          landing: path.resolve(__dirname, 'landing.html'),
           list: path.resolve(__dirname, 'list.html'),
           form: path.resolve(__dirname, 'form.html'),
           record: path.resolve(__dirname, 'record.html'),

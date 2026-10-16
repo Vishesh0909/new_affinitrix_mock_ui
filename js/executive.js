@@ -27,12 +27,14 @@ import {
 } from './data.js';
 
 import { ageingDonut, liquidityChart, trajectoryChart } from './charts.js';
+import { microBar, ring, sparkline, stackBar } from './visuals.js';
 import { countUpOnView, revealOnScroll } from './motion.js';
+import { initPageHeader } from './header.js';
 
 const $ = (sel, root = document) => root.querySelector(sel);
 
 const ARROW =
-  '<svg class="afx-arrow" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>';
+  '<svg class="afx-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg>';
 
 /* ----------------------------------------------------------------------- */
 /* Headline strip                                                           */
@@ -49,7 +51,7 @@ function renderHeadlines() {
       count: true,
       meta: `${percent(POSITION.momChange)} MoM`,
       tone: 'is-positive',
-      href: 'index.html',
+      href: 'overview.html',
       hint: 'Year to date, postings recorded through August 2026.',
     },
     {
@@ -67,7 +69,7 @@ function renderHeadlines() {
       count: true,
       meta: `${share(AGEING.buckets[3].share)} critical`,
       tone: 'is-critical',
-      href: 'index.html#rec',
+      href: 'overview.html#rec',
       hint: 'Across all four ageing bands.',
     },
     {
@@ -76,9 +78,42 @@ function renderHeadlines() {
       count: true,
       meta: LIQUIDITY.facility,
       tone: 'is-negative',
-      href: 'index.html#cash',
+      href: 'overview.html#cash',
       hint: 'Principal operating account at the last posted period.',
     },
+  ];
+
+  // Each tile's graphic is derived from that tile's own underlying series —
+  // never a cross-tile comparison, which would put different units on one
+  // scale.
+  const visuals = [
+    // Income against expenditure, the two figures the surplus is made of.
+    stackBar([
+      { value: POSITION.income, color: 'var(--chart-1)', label: 'Income' },
+      { value: POSITION.expenses, color: 'var(--ink-faint)', label: 'Expenses' },
+    ]),
+    // Order lifecycle split across the committed spend.
+    stackBar(
+      PROCUREMENT.lifecycle.map((l) => ({
+        value: l.count,
+        color: `var(--bar-${l.tone})`,
+        label: l.label,
+      }))
+    ),
+    // The four ageing bands.
+    stackBar(
+      AGEING.buckets.map((b) => ({
+        value: b.value,
+        color: `var(--chart-age-${b.tone})`,
+        label: b.label,
+      }))
+    ),
+    // Twelve months of real readings.
+    sparkline(LIQUIDITY.points.map((p) => p.value), {
+      label: '12-month liquidity trend',
+      width: 110,
+      height: 26,
+    }),
   ];
 
   host.innerHTML = tiles
@@ -88,6 +123,7 @@ function renderHeadlines() {
         <div class="afx-inst-label">${t.label}</div>
         <div class="afx-inst-value"><span data-exec-count="${i}">${money(t.value)}</span></div>
         <div class="afx-inst-meta">${t.meta}${ARROW}</div>
+        <div class="afx-figure-visual">${visuals[i] || ''}</div>
       </a>`
     )
     .join('');
@@ -161,12 +197,28 @@ function renderWorkforce() {
       value: `${(WORKFORCE.attendanceRate * 100).toFixed(1)}%`,
       meta: WORKFORCE.attendanceDays,
       tone: 'is-positive',
+      gauge: ring({
+        pct: WORKFORCE.attendanceRate * 100,
+        tone: 'pos',
+        size: 52,
+        caption: 'attendance',
+        label: `${Math.round(WORKFORCE.attendanceRate * 100)}%`,
+      }),
     },
     {
       label: 'Next Payroll (Gross)',
       value: money(WORKFORCE.nextPayrollGross),
       meta: WORKFORCE.payrollDate,
       tone: '',
+      // Net take-home against deductions, both stated figures.
+      visual: stackBar([
+        { value: WORKFORCE.nextPayrollNet, color: 'var(--chart-1)', label: 'Net disbursed' },
+        {
+          value: WORKFORCE.nextPayrollGross - WORKFORCE.nextPayrollNet,
+          color: 'var(--ink-faint)',
+          label: 'Deductions',
+        },
+      ]),
     },
     {
       label: 'Awaiting Authorization',
@@ -186,9 +238,15 @@ function renderWorkforce() {
     .map(
       (t) => `
       <div class="afx-instrument ${t.tone}" data-reveal-item>
-        <div class="afx-inst-label">${t.label}</div>
-        <div class="afx-inst-value">${t.value}</div>
-        <div class="afx-inst-meta">${t.meta}</div>
+        <div class="afx-figure-row">
+          <div style="flex:1;min-width:0">
+            <div class="afx-inst-label">${t.label}</div>
+            <div class="afx-inst-value">${t.value}</div>
+            <div class="afx-inst-meta">${t.meta}</div>
+          </div>
+          ${t.gauge || ''}
+        </div>
+        ${t.visual ? `<div class="afx-figure-visual">${t.visual}</div>` : ''}
       </div>`
     )
     .join('');
@@ -202,10 +260,13 @@ function renderLedger() {
   const host = $('[data-exec-ledger]');
   if (!host) return;
 
+  // Both bars share one scale, so equal debits and credits read as equal.
+  const scale = Math.max(LEDGER.debits, LEDGER.credits) || 1;
+
   host.innerHTML = `
     <div class="afx-assure">
       <span class="afx-assure-mark" aria-hidden="true">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
       </span>
       <div class="afx-assure-text">
         <b>${LEDGER.status}</b>
@@ -213,9 +274,21 @@ function renderLedger() {
           &middot; ${LEDGER.periodStart} &rarr; ${LEDGER.periodEnd}</span>
       </div>
       <dl class="afx-assure-figures">
-        <div><dt>Total Debits</dt><dd>${money(LEDGER.debits)}</dd></div>
-        <div><dt>Total Credits</dt><dd>${money(LEDGER.credits)}</dd></div>
-        <div><dt>Variance</dt><dd class="is-pos">${money(LEDGER.variance)}</dd></div>
+        <div>
+          <dt>Total Debits</dt>
+          <dd>${money(LEDGER.debits)}</dd>
+          ${microBar({ value: LEDGER.debits, max: scale, tone: 'brand', basis: 'the larger side' })}
+        </div>
+        <div>
+          <dt>Total Credits</dt>
+          <dd>${money(LEDGER.credits)}</dd>
+          ${microBar({ value: LEDGER.credits, max: scale, tone: 'brand', basis: 'the larger side', delay: 90 })}
+        </div>
+        <div>
+          <dt>Variance</dt>
+          <dd class="is-pos">${money(LEDGER.variance)}</dd>
+          ${microBar({ value: Math.abs(LEDGER.variance), max: scale, tone: 'pos', basis: 'the larger side', delay: 180 })}
+        </div>
       </dl>
     </div>`;
 }
@@ -233,22 +306,27 @@ function boot() {
   renderWorkforce();
   renderModuleTable();
 
+  const charts = [];
+
   const trajectoryHost = $('[data-chart="exec-trajectory"]');
   if (trajectoryHost) {
     const chart = trajectoryChart(trajectoryHost, { height: 260 });
     chart.update({ periods: TRAJECTORY.periods, hidden: [] });
+    charts.push(() => chart.update({ periods: TRAJECTORY.periods, hidden: [] }));
   }
 
   const ageingHost = $('[data-chart="exec-ageing"]');
   if (ageingHost) {
     const donut = ageingDonut(ageingHost, { height: 200 });
     donut.update({ buckets: AGEING.buckets });
+    charts.push(() => donut.update({ buckets: AGEING.buckets }));
   }
 
   const liquidityHost = $('[data-chart="exec-liquidity"]');
   if (liquidityHost) {
     const chart = liquidityChart(liquidityHost, { height: 230 });
     chart.update({ points: LIQUIDITY.points });
+    charts.push(() => chart.update({ points: LIQUIDITY.points }));
   }
 
   // Stamp the as-of line from the data rather than hardcoding it in markup.
@@ -256,6 +334,18 @@ function boot() {
   if (asOf) asOf.textContent = ORG.postedThrough;
 
   revealOnScroll('[data-reveal]');
+  initPageHeader();
+
+  // Sync re-reads the data module and re-renders every block in place.
+  document.addEventListener('afx:refresh', (e) => {
+    renderHeadlines();
+    renderLedger();
+    renderProcurement();
+    renderWorkforce();
+    renderModuleTable();
+    charts.forEach((redraw) => redraw());
+    if (e.detail) e.detail.done = Promise.resolve();
+  });
 }
 
 if (document.readyState === 'loading') {

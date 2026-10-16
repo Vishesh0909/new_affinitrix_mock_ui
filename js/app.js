@@ -5,36 +5,44 @@
  * modal drawers, interactive line-item calculations, and micro-motion.
  */
 
-import { enterOverlay, enterToast, exitToast, moveIndicator, pressFeedback } from './motion.js';
+import { enterToast, exitToast, moveIndicator } from './motion.js';
+import { percentCells } from './visuals.js';
 
 (function () {
   'use strict';
 
   // Crisp Enterprise Line Icons
+  // Outline icon set — 24x24, stroked rather than filled, so the weight sits
+  // alongside the UI type instead of shouting over it.
   const ICONS = {
-    dashboard: '<path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>',
-    accounting: '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/>',
-    chart: '<path d="M3 3v18h18v-2H5V3H3zm4 12h2v4H7v-4zm4-6h2v10h-2V9zm4 4h2v6h-2v-6zm4-8h2v14h-2V5z"/>',
-    purchasing: '<path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>',
-    people: '<path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>',
-    portal: '<path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/>',
-    report: '<path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>',
-    check: '<path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>',
-    bell: '<path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>',
-    sun: '<path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1z"/>',
-    moon: '<path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8z"/>',
-    search: '<path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>',
-    menu: '<path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>',
-    chevronLeft: '<path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>',
-    chevronRight: '<path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>',
-    home: '<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>',
-    layers: '<path d="M11.99 18.54l-7.37-5.73L3 14.07l9 7 9-7-1.63-1.27-7.38 5.74zM12 16l7.36-5.73L21 9.07l-9-7-9 7 1.63 1.27L12 16z"/>',
-    plus: '<path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>',
-    download: '<path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>'
+    executive: '<path d="M12 3 3 7.5l9 4.5 9-4.5L12 3Z"/><path d="m3 12 9 4.5L21 12"/><path d="m3 16.5 9 4.5 9-4.5"/>',
+    dashboard: '<rect x="3" y="3" width="7.5" height="7.5" rx="1.6"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.6"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.6"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.6"/>',
+    accounting: '<circle cx="12" cy="12" r="9"/><path d="M12 6.5v11"/><path d="M14.8 9.4A2.4 2.4 0 0 0 12.4 8h-1a2.2 2.2 0 0 0 0 4.4h1.2a2.2 2.2 0 0 1 0 4.4h-1a2.4 2.4 0 0 1-2.4-1.4"/>',
+    chart: '<path d="M3 3v16.4A1.6 1.6 0 0 0 4.6 21H21"/><path d="M7.5 16.5v-3M12 16.5v-7M16.5 16.5v-5"/>',
+    purchasing: '<circle cx="9.5" cy="19.5" r="1.4"/><circle cx="17.5" cy="19.5" r="1.4"/><path d="M2.5 3h2.4l2.3 11.1a1.8 1.8 0 0 0 1.8 1.4h8.3a1.8 1.8 0 0 0 1.8-1.4L20.5 7H5.6"/>',
+    people: '<path d="M15.5 20.5v-1.8a3.6 3.6 0 0 0-3.6-3.6H6.6A3.6 3.6 0 0 0 3 18.7v1.8"/><circle cx="9.25" cy="7.5" r="3.5"/><path d="M21 20.5v-1.8a3.6 3.6 0 0 0-2.7-3.48"/><path d="M15.5 4.2a3.6 3.6 0 0 1 0 6.96"/>',
+    portal: '<rect x="3" y="3" width="18" height="18" rx="2.5"/><path d="M3 9h18"/><path d="M9 9v12"/>',
+    report: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5"/><path d="M9 13.5h6M9 17h4"/>',
+    check: '<circle cx="12" cy="12" r="9"/><path d="m8.4 12.2 2.4 2.4 4.8-5.2"/>',
+    bell: '<path d="M18 8.6a6 6 0 1 0-12 0c0 5.6-2.4 7-2.4 7h16.8s-2.4-1.4-2.4-7"/><path d="M13.7 19.4a2 2 0 0 1-3.4 0"/>',
+    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.5 1.5M17.9 17.9l1.5 1.5M2.5 12h2M19.5 12h2M4.6 19.4l1.5-1.5M17.9 6.1l1.5-1.5"/>',
+    moon: '<path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1Z"/>',
+    search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.85-3.85"/>',
+    menu: '<path d="M4 6.5h16M4 12h16M4 17.5h16"/>',
+    chevronLeft: '<path d="m14.5 6-6 6 6 6"/>',
+    chevronRight: '<path d="m9.5 6 6 6-6 6"/>',
+    home: '<path d="M3 10.4 12 3l9 7.4"/><path d="M5.6 9.3V19a2 2 0 0 0 2 2H10v-5.6h4V21h2.4a2 2 0 0 0 2-2V9.3"/>',
+    layers: '<path d="M12 3 3 7.5l9 4.5 9-4.5L12 3Z"/><path d="m3 12 9 4.5L21 12"/><path d="m3 16.5 9 4.5 9-4.5"/>',
+    plus: '<path d="M12 5.5v13M5.5 12h13"/>',
+    download: '<path d="M12 3.5v11.5"/><path d="m7.5 10.5 4.5 4.5 4.5-4.5"/><path d="M4 20.5h16"/>',
+    sync: '<path d="M20.5 11.5a8.5 8.5 0 0 0-14.6-5.3L3 9"/><path d="M3.5 12.5a8.5 8.5 0 0 0 14.6 5.3L21 15"/><path d="M3 4.5V9h4.5M21 19.5V15h-4.5"/>',
+    alert: '<circle cx="12" cy="12" r="9"/><path d="M12 7.8v5"/><path d="M12 16.2h.01"/>',
+    bank: '<path d="m3 9.5 9-5.5 9 5.5"/><path d="M4.5 9.5V18M9.5 9.5V18M14.5 9.5V18M19.5 9.5V18"/><path d="M2.5 20.5h19"/>',
+    doc: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5"/>'
   };
 
   function svg(name, size = 18) {
-    return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="currentColor">${ICONS[name] || ''}</svg>`;
+    return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name] || ''}</svg>`;
   }
   window.afxSvg = svg;
 
@@ -43,8 +51,8 @@ import { enterOverlay, enterToast, exitToast, moveIndicator, pressFeedback } fro
     {
       group: 'Core Financials',
       items: [
-        { id: 'executive', label: 'Executive Summary', icon: 'layers', href: 'executive.html' },
-        { id: 'dashboard', label: 'Financial Overview', icon: 'dashboard', href: 'index.html' },
+        { id: 'executive', label: 'Executive Summary', icon: 'executive', href: 'executive.html' },
+        { id: 'dashboard', label: 'Financial Overview', icon: 'dashboard', href: 'overview.html' },
         { id: 'report', label: 'Trial Balance & Ledger', icon: 'report', href: 'report.html' }
       ]
     },
@@ -66,7 +74,7 @@ import { enterOverlay, enterToast, exitToast, moveIndicator, pressFeedback } fro
     {
       group: 'System & Landing',
       items: [
-        { id: 'landing', label: 'Platform Welcome', icon: 'home', href: 'landing.html' }
+        { id: 'landing', label: 'Platform Welcome', icon: 'home', href: 'index.html' }
       ]
     }
   ];
@@ -77,14 +85,14 @@ import { enterOverlay, enterToast, exitToast, moveIndicator, pressFeedback } fro
       group: 'Workspaces',
       items: [
         { title: 'Executive Summary (Enterprise Roll-up)', href: 'executive.html', key: 'G X' },
-        { title: 'Accounting Overview Dashboard', href: 'index.html', key: 'G D' },
+        { title: 'Accounting Overview Dashboard', href: 'overview.html', key: 'G D' },
         { title: 'Purchase Orders Procurement Deck', href: 'list.html', key: 'G P' },
         { title: 'New Purchase Order Studio', href: 'form.html', key: 'N O' },
         { title: 'Trial Balance & Financial Ledger', href: 'report.html', key: 'G T' },
         { title: 'Leave Application Decision Center', href: 'approval.html', key: 'G A' },
         { title: 'Employee Self-Service Portal', href: 'portal.html', key: 'G S' },
         { title: 'Employee Personnel File (Hanna Baptista)', href: 'record.html', key: 'G E' },
-        { title: 'AFINTRIX Enterprise Welcome Portal', href: 'landing.html', key: 'G H' }
+        { title: 'AFINTRIX Enterprise Welcome Portal', href: 'index.html', key: 'G H' }
       ]
     },
     {
@@ -115,11 +123,13 @@ import { enterOverlay, enterToast, exitToast, moveIndicator, pressFeedback } fro
     document.querySelectorAll('.theme-toggle-trigger').forEach(btn => {
       btn.innerHTML = svg(t === 'dark' ? 'sun' : 'moon', 17);
     });
+    // `.is-on-dark` logos live on the navy sidebar, which does not follow the
+    // app theme, so they keep the light-ink artwork in both modes.
     const suffix = t === 'dark' ? '-dark' : '';
-    document.querySelectorAll('.brand-full-logo').forEach(img => {
+    document.querySelectorAll('.brand-full-logo:not(.is-on-dark)').forEach(img => {
       img.src = `assets/afintrix-logo${suffix}.png`;
     });
-    document.querySelectorAll('.brand-symbol-logo').forEach(img => {
+    document.querySelectorAll('.brand-symbol-logo:not(.is-on-dark)').forEach(img => {
       img.src = `assets/afintrix-symbol${suffix}.png`;
     });
   }
@@ -170,6 +180,11 @@ import { enterOverlay, enterToast, exitToast, moveIndicator, pressFeedback } fro
     document.getElementById('overlayScrim')?.classList.remove('open');
     document.querySelectorAll('.saas-modal.open, .saas-drawer.open, .saas-cmdk.open').forEach(el => {
       el.classList.remove('open');
+      // Overlays hide through `opacity` on the base class. Any inline opacity
+      // or transform left behind by a script would outrank that and pin the
+      // panel open, so clear them as we close.
+      el.style.opacity = '';
+      el.style.transform = '';
     });
     document.querySelector('.app')?.classList.remove('mobile-nav-open');
   }
@@ -183,7 +198,6 @@ import { enterOverlay, enterToast, exitToast, moveIndicator, pressFeedback } fro
 
     scrim.classList.add('open');
     cmdk.classList.add('open');
-    enterOverlay(cmdk, 'modal');
     const input = document.getElementById('cmdkQueryInput');
     if (input) {
       input.value = '';
@@ -238,14 +252,17 @@ import { enterOverlay, enterToast, exitToast, moveIndicator, pressFeedback } fro
     // 1. Sidebar HTML
     const sidebar = `
       <aside class="app-sidebar" id="appSidebar">
+        <button class="sidebar-toggle-btn" id="sidebarToggleBtn"
+                aria-label="Collapse or expand navigation (Ctrl+B)"
+                title="Collapse / Expand Workspace (Ctrl+B)">
+          ${svg('chevronLeft', 15)}
+        </button>
+
         <div class="sidebar-brand-deck">
-          <a href="landing.html" class="brand-link" title="AFINTRIX ERP Platform">
-            <img src="assets/afintrix-logo.png" alt="AFINTRIX" class="brand-full-logo">
-            <img src="assets/afintrix-symbol.png" alt="AFINTRIX" class="brand-symbol-logo">
+          <a href="index.html" class="brand-link" title="AFINTRIX ERP Platform">
+            <img src="assets/afintrix-logo-dark.png" alt="AFINTRIX" class="brand-full-logo is-on-dark">
+            <img src="assets/afintrix-symbol-dark.png" alt="AFINTRIX" class="brand-symbol-logo is-on-dark">
           </a>
-          <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Collapse / Expand Workspace (Ctrl+B)">
-            ${svg('chevronLeft', 16)}
-          </button>
         </div>
 
         <div class="sidebar-org-switcher">
@@ -293,15 +310,22 @@ import { enterOverlay, enterToast, exitToast, moveIndicator, pressFeedback } fro
       const rawCrumb = crumbEl ? crumbEl.dataset.crumb : 'AFINTRIX / Enterprise';
       const parts = rawCrumb.split('/');
 
+      // The active nav entry supplies the crumb's leading mark, so the trail
+      // always shows which module you are inside.
+      const activeNav = NAV_STRUCTURE
+        .flatMap(g => g.items)
+        .find(item => item.id === currentSection);
+
       const breadcrumbHtml = `
-        <div class="breadcrumbs-deck">
+        <nav class="breadcrumbs-deck" aria-label="Breadcrumb">
+          <span class="crumb-mark" aria-hidden="true">${svg(activeNav ? activeNav.icon : 'layers', 15)}</span>
           ${parts.map((p, i) => {
             const isLast = i === parts.length - 1;
             return isLast
-              ? `<span class="current-crumb">${p.trim()}</span>`
-              : `<a href="#">${p.trim()}</a><span class="slash">/</span>`;
+              ? `<span class="current-crumb" aria-current="page">${p.trim()}</span>`
+              : `<a href="#">${p.trim()}</a><span class="slash" aria-hidden="true">${svg('chevronRight', 13)}</span>`;
           }).join('')}
-        </div>
+        </nav>
       `;
 
       const topBar = `
@@ -314,20 +338,26 @@ import { enterOverlay, enterToast, exitToast, moveIndicator, pressFeedback } fro
           </div>
 
           <div class="top-bar-right">
-            <button class="command-search-trigger" id="cmdkTriggerBtn">
-              ${svg('search', 15)}
-              <span>Search or jump to...</span>
+            <button class="command-search-trigger" id="cmdkTriggerBtn" aria-label="Search or jump to a workspace">
+              <span class="search-glyph">${svg('search', 15)}</span>
+              <span class="search-label">Search or jump to...</span>
               <kbd>Ctrl K</kbd>
             </button>
-            <button class="action-icon-btn theme-toggle-trigger" id="themeToggleTrigger" title="Toggle Light / Dark Mode">
-              ${svg('moon', 17)}
-            </button>
-            <button class="action-icon-btn" id="notifBellBtn" title="Alerts &amp; Tasks">
-              ${svg('bell', 17)}
-              <span class="badge-dot"></span>
-            </button>
-            <a href="portal.html" class="btn btn-secondary btn-sm" style="gap:6px" title="Employee Self-Service">
-              <span style="width:8px;height:8px;border-radius:99px;background:var(--pos)"></span>
+
+            <div class="top-bar-cluster">
+              <button class="action-icon-btn theme-toggle-trigger" id="themeToggleTrigger" title="Toggle Light / Dark Mode" aria-label="Toggle light or dark mode">
+                ${svg('moon', 17)}
+              </button>
+              <button class="action-icon-btn" id="notifBellBtn" title="Alerts &amp; Tasks" aria-label="Alerts and tasks">
+                ${svg('bell', 17)}
+                <span class="badge-dot"></span>
+              </button>
+            </div>
+
+            <span class="top-bar-divider" aria-hidden="true"></span>
+
+            <a href="portal.html" class="btn btn-secondary btn-sm top-bar-portal" title="Employee Self-Service">
+              <span class="portal-status" aria-hidden="true"></span>
               <span>Portal</span>
             </a>
           </div>
@@ -425,9 +455,7 @@ import { enterOverlay, enterToast, exitToast, moveIndicator, pressFeedback } fro
     const appEl = document.querySelector('.app');
 
     // Sidebar collapse
-    document.getElementById('sidebarToggleBtn')?.addEventListener('click', () => {
-      appEl.classList.toggle('nav-collapsed');
-    });
+    document.getElementById('sidebarToggleBtn')?.addEventListener('click', () => toggleNav());
 
     // Mobile nav
     document.getElementById('mobileNavTrigger')?.addEventListener('click', () => {
@@ -440,7 +468,6 @@ import { enterOverlay, enterToast, exitToast, moveIndicator, pressFeedback } fro
     document.addEventListener('click', (e) => {
       const trigger = e.target.closest('.theme-toggle-trigger');
       if (!trigger) return;
-      pressFeedback(trigger);
       setTheme(getTheme() === 'dark' ? 'light' : 'dark');
       toast('Display Theme Updated', `Switched to ${getTheme()} mode`, 'info');
     });
@@ -457,7 +484,7 @@ import { enterOverlay, enterToast, exitToast, moveIndicator, pressFeedback } fro
         const action = act.dataset.action;
         closeAll();
         if (action === 'toggleTheme') setTheme(getTheme() === 'dark' ? 'light' : 'dark');
-        if (action === 'toggleNav') appEl.classList.toggle('nav-collapsed');
+        if (action === 'toggleNav') toggleNav();
         if (action === 'openNewEntry') {
           const m = document.getElementById('mNew');
           if (m) {
@@ -549,10 +576,6 @@ import { enterOverlay, enterToast, exitToast, moveIndicator, pressFeedback } fro
         return;
       }
 
-      // Tactile press feedback on buttons
-      const pressed = e.target.closest('.btn, .action-icon-btn');
-      if (pressed) pressFeedback(pressed);
-
       // Modal / Drawer Openers
       const op = e.target.closest('[data-open]');
       if (op) {
@@ -562,7 +585,6 @@ import { enterOverlay, enterToast, exitToast, moveIndicator, pressFeedback } fro
         if (target) {
           document.getElementById('overlayScrim')?.classList.add('open');
           target.classList.add('open', 'on');
-          enterOverlay(target, target.classList.contains('saas-drawer') ? 'drawer' : 'modal');
           // Move focus into the dialog so keyboard users land inside it.
           const focusable = target.querySelector(
             'input, select, textarea, button:not([data-close])'
@@ -602,7 +624,7 @@ import { enterOverlay, enterToast, exitToast, moveIndicator, pressFeedback } fro
       }
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b') {
         e.preventDefault();
-        appEl.classList.toggle('nav-collapsed');
+        toggleNav();
       }
       if (e.key === 'Escape') {
         closeAll();
@@ -625,6 +647,49 @@ import { enterOverlay, enterToast, exitToast, moveIndicator, pressFeedback } fro
     rail.style.opacity = '1';
   }
 
+  /**
+   * Collapsing hides the section headers, which shifts every nav item, so the
+   * rail has to be re-measured — once immediately and again once the width
+   * transition has settled.
+   */
+  function toggleNav() {
+    const appEl = document.querySelector('.app');
+    if (!appEl) return;
+    appEl.classList.toggle('nav-collapsed');
+    positionNavRail();
+    const sidebar = document.getElementById('appSidebar');
+    if (sidebar) {
+      sidebar.addEventListener('transitionend', positionNavRail, { once: true });
+    }
+    // Belt and braces for browsers that coalesce the transition event away.
+    setTimeout(positionNavRail, 260);
+  }
+
+  /**
+   * Feed the pointer position into --mx/--my so every button's radial
+   * highlight follows the cursor. Delegated on the document and throttled to
+   * one frame, so it costs a single rAF per move no matter how many buttons
+   * are on screen.
+   */
+  function wirePointerGlow() {
+    let frame = 0;
+    let pending = null;
+
+    document.addEventListener('pointermove', (e) => {
+      const btn = e.target.closest('.btn');
+      if (!btn) return;
+      pending = { btn, x: e.clientX, y: e.clientY };
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        if (!pending) return;
+        const rect = pending.btn.getBoundingClientRect();
+        pending.btn.style.setProperty('--mx', `${pending.x - rect.left}px`);
+        pending.btn.style.setProperty('--my', `${pending.y - rect.top}px`);
+      });
+    }, { passive: true });
+  }
+
   // Boot
   function boot() {
     // Theme is applied before anything else so the first paint is correct,
@@ -633,6 +698,9 @@ import { enterOverlay, enterToast, exitToast, moveIndicator, pressFeedback } fro
     buildStudioShell();
     wireInteractions();
     positionNavRail();
+    wirePointerGlow();
+    // Purely additive: a cell whose text is not a bare percentage is skipped.
+    percentCells(document);
     window.addEventListener('resize', positionNavRail);
   }
 

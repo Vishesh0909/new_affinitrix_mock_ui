@@ -22,30 +22,39 @@
     <div class="afx-page">
      <div class="afx-page-inner">
 
-      <!-- Command bar -->
+      <!-- Sticky command header -->
+      <div class="afx-header" data-page-header>
       <div class="afx-commandbar">
         <div class="afx-title-group">
           <div class="afx-eyebrow">Enterprise Position</div>
-          <h1>Executive Summary</h1>
-          <div class="afx-context">
-            <span>Afintrix (Demo) Entity</span>
-            <span class="afx-sep"></span>
-            <span>Dhaka AD &middot; FY 2026&ndash;2027</span>
-            <span class="afx-sep"></span>
-            <span>As at <b data-exec-asof>August 2026</b></span>
+          <div class="afx-title-row">
+            <span class="afx-page-icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 3 7.5l9 4.5 9-4.5L12 3Z"/><path d="m3 12 9 4.5L21 12"/><path d="m3 16.5 9 4.5 9-4.5"/></svg></span>
+            <h1>Executive Summary</h1>
+          </div>
+          <div class="afx-context is-chips">
+            <span class="afx-meta-chip">Afintrix (Demo) Entity</span>
+            <span class="afx-meta-chip">Dhaka AD &middot; FY 2026&ndash;2027</span>
+            <span class="afx-meta-chip is-live">As at <b data-exec-asof>August 2026</b></span>
+            <span class="afx-meta-chip is-quiet afx-updated" data-updated>Updated just now</span>
           </div>
         </div>
 
         <div class="afx-actions">
-          <a href="index.html" class="btn btn-secondary btn-sm">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+<button class="btn btn-secondary btn-sm afx-sync" data-sync data-state="idle" title="Re-read the ledger snapshot and re-render">
+            <svg class="is-refresh" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 11.5a8.5 8.5 0 0 0-14.6-5.3L3 9"/><path d="M3.5 12.5a8.5 8.5 0 0 0 14.6 5.3L21 15"/><path d="M3 4.5V9h4.5M21 19.5V15h-4.5"/></svg>
+            <span data-sync-label>Sync</span>
+          </button>
+          <a href="overview.html" class="btn btn-secondary btn-sm">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="1.6"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.6"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.6"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.6"/></svg>
             <span>Financial Overview</span>
           </a>
           <a href="report.html" class="btn btn-primary btn-sm">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+            <svg class="is-download" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5v11.5"/><path d="m7.5 10.5 4.5 4.5 4.5-4.5"/><path d="M4 20.5h16"/></svg>
             <span>Export Statement</span>
           </a>
         </div>
+      </div>
+        <div class="afx-progress" aria-hidden="true"><span data-progress></span></div>
       </div>
 
       <p class="afx-summary-note">
@@ -69,7 +78,7 @@
               <h2>Revenue &amp; Expenditure Trajectory</h2>
               <p class="afx-card-sub">FY 2026&ndash;2027 &middot; recorded through August 2026</p>
             </div>
-            <a href="index.html" class="btn btn-ghost btn-sm" style="color:var(--brand);font-weight:700">Detail &rarr;</a>
+            <a href="overview.html" class="btn btn-ghost btn-sm" style="color:var(--brand);font-weight:700">Detail &rarr;</a>
           </header>
           <div class="afx-card-body">
             <div data-chart="exec-trajectory"></div>
@@ -82,7 +91,7 @@
               <h2>Receivables Ageing</h2>
               <p class="afx-card-sub">Distribution across four bands</p>
             </div>
-            <a href="index.html#rec" class="btn btn-ghost btn-sm" style="color:var(--brand);font-weight:700">Detail &rarr;</a>
+            <a href="overview.html#rec" class="btn btn-ghost btn-sm" style="color:var(--brand);font-weight:700">Detail &rarr;</a>
           </header>
           <div class="afx-card-body">
             <div data-chart="exec-ageing"></div>
@@ -98,7 +107,7 @@
               <h2>Cash &amp; Bank Liquidity</h2>
               <p class="afx-card-sub">12-month trajectory &middot; principal operating account</p>
             </div>
-            <a href="index.html#cash" class="btn btn-ghost btn-sm" style="color:var(--brand);font-weight:700">Detail &rarr;</a>
+            <a href="overview.html#cash" class="btn btn-ghost btn-sm" style="color:var(--brand);font-weight:700">Detail &rarr;</a>
           </header>
           <div class="afx-card-body">
             <div data-chart="exec-liquidity"></div>
